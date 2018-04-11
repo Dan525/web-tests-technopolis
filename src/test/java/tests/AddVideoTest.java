@@ -15,5 +15,6 @@ public class AddVideoTest extends TestBase {
         VideoPage videoPage = new VideoPage(driver);
         videoPage.clickOnSection();
         videoPage.clickOnFirstVideo();
+        videoPage.clickWatchLater();
     }
 }

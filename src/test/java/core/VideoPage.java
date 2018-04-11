@@ -3,6 +3,7 @@ package core;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -14,11 +15,16 @@ public class VideoPage extends PageBase{
     public static final By SECTIONS_BLOCK = By.xpath(".//ul[@class='mml_cat_ul']");
     public static final By SEARCH_VIDEO = By.xpath(".//div[@class='it_w search-input' and @id='vv-search']");
     public static final By PLAYER_WATCHLATER = By.xpath(".//div[contains(@class,'vpl_watchlater')]");
-    //(".//a[@id='vv_btn_watchLater']") Отложенные видео
-    //(".//a[@id='vv_btn_myVideo']") Мое видео
-    //(".//div[@class='vid-card_n']") Имя в отложенных
-    //(".//div[contains(@class,'portlet_h__nb')]") Имя видео
+    public static final By WATCHLATER_VIDEO = By.xpath(".//a[@id='vv_btn_watchLater']");
+    public static final By MY_VIDEO = By.xpath(".//a[@id='vv_btn_myVideo']");
+    public static final By VIDEO_NAME = By.xpath(".//div[contains(@class,'portlet_h__nb textWrap')]");
+    public static final By CLOSE_VIDEO = By.xpath(".//div[@id='vpl_close']/child::div");
+    public static final By NAME_WATCHLATER_VIDEO = By.xpath(".//div[contains(@class,'vid-card_n')]/child::div");
+    public static final By PLAYER = By.xpath(".//video[contains(@class,'display')]");
 
+    //(".//div[@class='vid-card_n']") Имя в отложенных
+    //(".//div[contains(@class,'__watched')]")[0] Видео из отложенных
+    //(".//div[contains(@class,'__watched')]/child::a")[0] Имя видео в разделе отложенное
 
     public VideoPage(WebDriver driver) {
         super(driver);
@@ -46,7 +52,14 @@ public class VideoPage extends PageBase{
     }
 
     public void clickWatchLater() {
-        click(PLAYER_WATCHLATER);
+        Actions mouse = new Actions(driver);
+        mouse.moveToElement(driver.findElement(PLAYER)).click(driver.findElement(PLAYER_WATCHLATER)).build().perform();
+        String videoName = driver.findElement(VIDEO_NAME).getText();
+        click(CLOSE_VIDEO);
+        click(MY_VIDEO);
+        click(WATCHLATER_VIDEO);
+        String videoNameWatchLater = driver.findElement(NAME_WATCHLATER_VIDEO).getText();
+        Assert.assertEquals("Названия видео не совпадают", videoName, videoNameWatchLater);
     }
 
 }
