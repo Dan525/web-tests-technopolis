@@ -3,9 +3,13 @@ package core;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.Collections;
+import java.util.List;
 
 public class VideoPage extends PageBase{
 
@@ -19,12 +23,8 @@ public class VideoPage extends PageBase{
     public static final By MY_VIDEO = By.xpath(".//a[@id='vv_btn_myVideo']");
     public static final By VIDEO_NAME = By.xpath(".//div[contains(@class,'portlet_h__nb textWrap')]");
     public static final By CLOSE_VIDEO = By.xpath(".//div[@id='vpl_close']/child::div");
-    public static final By NAME_WATCHLATER_VIDEO = By.xpath(".//div[contains(@class,'vid-card_n')]/child::div");
     public static final By PLAYER = By.xpath(".//video[contains(@class,'display')]");
-
-    //(".//div[@class='vid-card_n']") Имя в отложенных
-    //(".//div[contains(@class,'__watched')]")[0] Видео из отложенных
-    //(".//div[contains(@class,'__watched')]/child::a")[0] Имя видео в разделе отложенное
+    public static final By VIDEO_PREVIEW = By.xpath(".//div[contains(@class,'vid-card js-frozen js-watched')]");
 
     public VideoPage(WebDriver driver) {
         super(driver);
@@ -33,12 +33,9 @@ public class VideoPage extends PageBase{
     protected void check() {
         (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
-                return isElementPresent(SECTIONS_BLOCK);
+                return isElementPresent(SECTIONS_BLOCK) && isElementPresent(SEARCH_VIDEO);
             }
         });
-        //Assert.assertTrue("Нет разделов", isElementPresent(SECTIONS_BLOCK));
-        Assert.assertTrue("Нет строки поиска", isElementPresent(SEARCH_VIDEO));
-
     }
 
     public void clickOnSection() {
@@ -47,8 +44,11 @@ public class VideoPage extends PageBase{
 
     public void clickOnFirstVideo() {
         click(SLIDER_VIDEO);
-        Assert.assertTrue("Видео не запустилось", isElementPresent(PLAYER_PANEL));
-        //if (isElementPresent(PLAYER_PANEL)) System.out.println("Видео запустилось!");
+        (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return isElementPresent(PLAYER_PANEL);
+            }
+        });
     }
 
     public void clickWatchLater() {
@@ -58,8 +58,15 @@ public class VideoPage extends PageBase{
         click(CLOSE_VIDEO);
         click(MY_VIDEO);
         click(WATCHLATER_VIDEO);
-        String videoNameWatchLater = driver.findElement(NAME_WATCHLATER_VIDEO).getText();
-        Assert.assertEquals("Названия видео не совпадают", videoName, videoNameWatchLater);
+        String videoNameWatchLater = videoList(VIDEO_PREVIEW).get(0).getVideoName();
+        Assert.assertEquals("Видео отсутствует в отложенных", videoName, videoNameWatchLater);
     }
 
+    public List<VideoWrapper> videoList(By videoPreview) {
+        if (driver.findElement(videoPreview).isDisplayed()) {
+            List<WebElement> videos = driver.findElements(videoPreview);
+            return VideoTransformer.wrap(videos, driver);
+        }
+        return Collections.emptyList();
+    }
 }
