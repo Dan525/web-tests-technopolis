@@ -11,7 +11,6 @@ public class OpenVideoTest extends TestBase{
         new SessionPage(driver).doLogin(new TestBot("89315960060", "q123451234"));
         new UserMainPage(driver).clickVideoOnToolbar();
         VideoPage videoPage = new VideoPage(driver);
-        videoPage.clickOnSection();
-        videoPage.clickOnFirstVideo();
+        videoPage.clickOnFirstVideo(VideoPage.POPULAR_VIDEO);
     }
 }

@@ -18,5 +18,8 @@ public class UserMainPage extends HelperBase{
         click(By.xpath(".//*[contains(@data-l,'userAltGroup')]"));
     }
 
-    public void clickVideoOnToolbar() { click(VIDEO);}
+    public VideoPage clickVideoOnToolbar() {
+        click(VIDEO);
+        return new VideoPage(driver);
+    }
 }
