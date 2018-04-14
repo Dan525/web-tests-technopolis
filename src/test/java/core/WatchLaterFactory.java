@@ -3,7 +3,7 @@ package core;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class VideoPlayerFactory {
+public class WatchLaterFactory {
 
     public static final By WATCHLATER_LABEL = By.xpath(".//div[contains(@class,'vpl_watchlater')]//*");
 

@@ -13,6 +13,7 @@ import java.util.List;
 public abstract class VideoPlayerPageBase extends PageBase{
     public static final By PLAYER_PANEL = By.xpath(".//div[@class='html5-vpl_panel_cnt']");
     public static final By PLAYER_WATCHLATER = By.xpath(".//div[contains(@class,'vpl_watchlater')]");
+    public static final By PLAYER_LIKE = By.xpath(".//div[@class='html5-vpl_ac_i' and contains(@al-click,'Like')]");
     public static final By WATCHLATER_VIDEO = By.xpath(".//a[@id='vv_btn_watchLater']");
     public static final By VIDEO_NAME = By.xpath(".//div[contains(@class,'portlet_h__nb textWrap')]");
     public static final By CLOSE_VIDEO = By.xpath(".//div[@id='vpl_close']/child::div");
@@ -35,7 +36,14 @@ public abstract class VideoPlayerPageBase extends PageBase{
         mouse.moveToElement(driver.findElement(PLAYER)).click(driver.findElement(PLAYER_WATCHLATER)).build().perform();
     }
 
+    public void clickLike() {
+        Actions mouse = new Actions(driver);
+        mouse.moveToElement(driver.findElement(PLAYER)).click(driver.findElement(PLAYER_LIKE)).build().perform();
+    }
+
     public abstract void checkWatchLater();
+
+    public abstract void checkLike();
 
     public List<VideoWrapper> videoList(By videoPreview) {
         if (driver.findElement(videoPreview).isDisplayed()) {

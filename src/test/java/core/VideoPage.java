@@ -28,7 +28,7 @@ public class VideoPage extends PageBase{
         });
     }
 
-    public VideoPlayerFactory clickOnFirstVideo(By videoSection) {
+    public WatchLaterFactory clickOnFirstVideo(By videoSection) {
         click(videoSection);
         click(SLIDER_VIDEO);
         (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
@@ -36,7 +36,7 @@ public class VideoPage extends PageBase{
                 return isElementPresent(PLAYER_PANEL);
             }
         });
-        return new VideoPlayerFactory();
+        return new WatchLaterFactory();
     }
 
 }

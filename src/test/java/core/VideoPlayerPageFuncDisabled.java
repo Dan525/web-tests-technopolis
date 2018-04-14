@@ -3,12 +3,13 @@ package core;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 
-public class VideoPlayerPageFuncDisabled extends VideoPlayerPageBase implements WatchLaterInterface{
+public class VideoPlayerPageFuncDisabled extends VideoPlayerPageBase implements WatchLaterInterface, LikeInterface {
 
     public VideoPlayerPageFuncDisabled(WebDriver driver) {
         super(driver);
     }
 
+    @Override
     public void checkWatchLater() {
         String videoName = driver.findElement(VIDEO_NAME).getText();
         click(CLOSE_VIDEO);
@@ -16,5 +17,10 @@ public class VideoPlayerPageFuncDisabled extends VideoPlayerPageBase implements 
         click(WATCHLATER_VIDEO);
         String videoNameWatchLater = videoList(VideoPage.VIDEO_PREVIEW).get(0).getVideoName();
         Assert.assertEquals("Видео отсутствует в отложенных", videoName, videoNameWatchLater);
+    }
+
+    @Override
+    public void checkLike() {
+
     }
 }
