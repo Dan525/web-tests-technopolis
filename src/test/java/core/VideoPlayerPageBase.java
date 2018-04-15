@@ -26,7 +26,7 @@ public abstract class VideoPlayerPageBase extends PageBase{
     protected void check() {
         (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
-                return isElementPresent(PLAYER) && isElementPresent(PLAYER_WATCHLATER);
+                return isElementPresent(PLAYER_LIKE);
             }
         });
     }

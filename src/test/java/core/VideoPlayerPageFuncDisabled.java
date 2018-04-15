@@ -21,6 +21,6 @@ public class VideoPlayerPageFuncDisabled extends VideoPlayerPageBase implements 
 
     @Override
     public void checkLike() {
-
+        System.out.println("Был поставлен лайк!");
     }
 }

@@ -21,6 +21,6 @@ public class VideoPlayerPageFuncEnabled extends VideoPlayerPageBase implements W
 
     @Override
     public void checkLike() {
-        //todo
+        System.out.println("Лайк уже был поставлен, теперь его нет!");
     }
 }

@@ -8,9 +8,9 @@ public class LikeTest extends TestBase {
 
     @Test
     public void likeTest() throws Exception {
-        new LoginMainPage(driver).doLogin(new TestBot("89315960060", "q123451234"));
+        new LoginMainPage(driver).doLogin(new TestBot("QA18testbot59", "QA18testbot"));
         FriendPage friendPage = new UserMainPage(driver).clickFriendsOnToolbar().chooseFriend();
-        LikeInterface videoPlayerPage = friendPage.selectVideo().get(driver);
+        LikeInterface videoPlayerPage = friendPage.selectVideo().get();
         videoPlayerPage.clickLike();
         videoPlayerPage.checkLike();
     }
