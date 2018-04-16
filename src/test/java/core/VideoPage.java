@@ -36,7 +36,7 @@ public class VideoPage extends PageBase{
                 return isElementPresent(PLAYER_PANEL);
             }
         });
-        return new WatchLaterFactory();
+        return new WatchLaterFactory(driver);
     }
 
 }

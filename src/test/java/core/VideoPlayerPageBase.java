@@ -1,10 +1,12 @@
 package core;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.Collections;
@@ -18,6 +20,13 @@ public abstract class VideoPlayerPageBase extends PageBase{
     public static final By VIDEO_NAME = By.xpath(".//div[contains(@class,'portlet_h__nb textWrap')]");
     public static final By CLOSE_VIDEO = By.xpath(".//div[@id='vpl_close']/child::div");
     public static final By PLAYER = By.xpath(".//video[contains(@class,'display')]");
+    public static final By LIKE_COUNT = By.xpath(".//span[@data-module='LikeComponent']/span[contains(@class,'count')]");
+    public static final By EXIT_MENU = By.xpath(".//div[@class='toolbar_dropdown_w h-mod']");
+    public static final By EXIT_BUTTON = By.xpath(".//a[contains(@data-l, 'logout') and text()='Выйти']");
+    public static final By CONFIRM_EXIT = By.xpath(".//input[contains(@data-l, 'confirm') and @value='Выйти']");
+
+    protected int likeBefore;
+    protected int likeAfter;
 
     public VideoPlayerPageBase(WebDriver driver) {
         super(driver);
@@ -26,7 +35,7 @@ public abstract class VideoPlayerPageBase extends PageBase{
     protected void check() {
         (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
-                return isElementPresent(PLAYER_LIKE);
+                return isElementPresent(PLAYER);
             }
         });
     }
@@ -37,8 +46,14 @@ public abstract class VideoPlayerPageBase extends PageBase{
     }
 
     public void clickLike() {
-        Actions mouse = new Actions(driver);
-        mouse.moveToElement(driver.findElement(PLAYER)).click(driver.findElement(PLAYER_LIKE)).build().perform();
+        likeBefore = Integer.parseInt(driver.findElement(LIKE_COUNT).getText());
+        new Actions(driver).moveToElement(driver.findElement(PLAYER)).click(driver.findElement(PLAYER_LIKE)).build().perform();
+        try {
+            new WebDriverWait(driver, 2).until(ExpectedConditions.stalenessOf(driver.findElement(LIKE_COUNT)));
+        } catch (TimeoutException e) {
+
+        }
+
     }
 
     public abstract void checkWatchLater();

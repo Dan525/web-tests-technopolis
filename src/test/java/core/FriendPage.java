@@ -1,6 +1,7 @@
 package core;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -27,7 +28,11 @@ public class FriendPage extends PageBase {
     public LikeFactory selectVideo() {
         click(TEST_FRIEND_VIDEOS);
         click(TEST_FRIEND_PLAYLIST);
-        (new WebDriverWait(driver, 10)).until(ExpectedConditions.stalenessOf(driver.findElement(TEST_FRIEND_VIDEO)));
+        try {
+            new WebDriverWait(driver, 3).until(ExpectedConditions.stalenessOf(driver.findElement(TEST_FRIEND_VIDEO)));
+        } catch (TimeoutException e) {
+
+        }
         click(TEST_FRIEND_VIDEO);
         //(new WebDriverWait(driver, 10)).until(ExpectedConditions.refreshed(waitForVideoButton));
         return new LikeFactory(driver);

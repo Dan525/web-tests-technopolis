@@ -14,9 +14,10 @@ public class LoginMainPage extends HelperBase{
         //todo
     }
 
-    public void doLogin(TestBot testBot) {
+    public UserMainPage doLogin(TestBot testBot) {
         type(testBot.getLogin(), By.id("field_email"));
         type(testBot.getPassword(), By.id("field_password"));
         click(By.xpath(".//*[contains(@value,'Войти')]"));
+        return new UserMainPage(driver);
     }
 }
