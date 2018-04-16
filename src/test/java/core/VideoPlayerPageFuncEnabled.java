@@ -22,7 +22,8 @@ public class VideoPlayerPageFuncEnabled extends VideoPlayerPageBase implements W
     @Override
     public void checkLike() {
         likeAfter = Integer.parseInt(driver.findElement(LIKE_COUNT).getText());
-        if (likeBefore == likeAfter + 1) {
+        Assert.assertEquals(likeBefore,likeAfter + 1);
+        /*if (likeBefore == likeAfter + 1) {
             System.out.println("Лайк уже был поставлен, теперь его нет! Тест пройден!");
             System.out.println("Число лайков до нажатия: " + likeBefore);
             System.out.println("Число лайков после нажатия: " + likeAfter);
@@ -30,6 +31,6 @@ public class VideoPlayerPageFuncEnabled extends VideoPlayerPageBase implements W
             System.out.println("Тест не пройден!");
             System.out.println("Число лайков до нажатия: " + likeBefore);
             System.out.println("Число лайков после нажатия: " + likeAfter);
-        }
+        }*/
     }
 }

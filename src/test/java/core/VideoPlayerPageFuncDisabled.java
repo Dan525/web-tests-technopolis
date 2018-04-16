@@ -31,7 +31,9 @@ public class VideoPlayerPageFuncDisabled extends VideoPlayerPageBase implements 
         click(CONFIRM_EXIT);
         UserMainPage checkFeedback = new LoginMainPage(driver).doLogin(new TestBot("89315960060", "q123451234"));
         String actualLikeFeedbackText = checkFeedback.checkFeedback();
-        if (actualLikeFeedbackText.equals(likeFeedbackText) && likeBefore == likeAfter - 1) {
+        Assert.assertEquals(likeFeedbackText, actualLikeFeedbackText);
+        Assert.assertEquals(likeBefore,likeAfter - 1);
+        /*if (actualLikeFeedbackText.equals(likeFeedbackText) && likeBefore == likeAfter - 1) {
             System.out.println("Лайк поставлен! Тест пройден!");
             System.out.println("Число лайков до нажатия: " + likeBefore);
             System.out.println("Число лайков после нажатия: " + likeAfter);
@@ -41,6 +43,6 @@ public class VideoPlayerPageFuncDisabled extends VideoPlayerPageBase implements 
             System.out.println("Число лайков после нажатия: " + likeAfter);
             System.out.println("Ожидаемая строка: " + likeFeedbackText);
             System.out.println("Полученная строка: " + actualLikeFeedbackText);
-        }
+        }*/
     }
 }
