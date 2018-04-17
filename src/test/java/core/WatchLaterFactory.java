@@ -25,15 +25,15 @@ public class WatchLaterFactory extends PageBase {
         });
     }
 
-    public WatchLaterInterface get(WebDriver driver) {
-        if (isButtonPressed(driver)) {
+    public WatchLaterInterface get() {
+        if (isButtonPressed()) {
             return new VideoPlayerPageFuncEnabled(driver);
         } else {
             return new VideoPlayerPageFuncDisabled(driver);
         }
     }
 
-    private boolean isButtonPressed(WebDriver driver) {
+    private boolean isButtonPressed() {
         int watchLaterButton = driver.findElements(WATCHLATER_LABEL).size();
         if (watchLaterButton == 2) return true;
         return false;

@@ -25,7 +25,7 @@ public class FriendPage extends PageBase {
 
     }
 
-    public LikeFactory selectVideo() {
+    public void selectVideo() {
         click(TEST_FRIEND_VIDEOS);
         click(TEST_FRIEND_PLAYLIST);
         try {
@@ -34,8 +34,5 @@ public class FriendPage extends PageBase {
 
         }
         click(TEST_FRIEND_VIDEO);
-        //(new WebDriverWait(driver, 10)).until(ExpectedConditions.refreshed(waitForVideoButton));
-        return new LikeFactory(driver);
-
     }
 }
