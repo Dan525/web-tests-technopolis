@@ -1,5 +1,6 @@
 package core;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -85,6 +86,7 @@ public abstract class VideoPlayerPageBase extends PageBase{
         }
         actualnextVideoName = driver.findElement(VIDEO_NAME).getText();
         System.out.println("Реальное название следующего видео: " + actualnextVideoName);
+        Assert.assertEquals(nextVideoName, actualnextVideoName);
     }
 
     public abstract void checkWatchLater();
