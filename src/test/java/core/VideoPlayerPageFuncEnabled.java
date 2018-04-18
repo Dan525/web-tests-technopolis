@@ -1,14 +1,13 @@
 package core;
 
-import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 
-public class VideoPlayerPageFuncEnabled extends VideoPlayerPageBase implements WatchLaterInterface, LikeInterface {
+public class VideoPlayerPageFuncEnabled extends VideoPlayerPage {
 
     public VideoPlayerPageFuncEnabled(WebDriver driver) {
         super(driver);
     }
-
+/*
     @Override
     public void checkWatchLater() {
         String videoName = driver.findElement(VIDEO_NAME).getText();
@@ -31,6 +30,6 @@ public class VideoPlayerPageFuncEnabled extends VideoPlayerPageBase implements W
             System.out.println("Тест не пройден!");
             System.out.println("Число лайков до нажатия: " + likeBefore);
             System.out.println("Число лайков после нажатия: " + likeAfter);
-        }*/
-    }
+        }
+    }*/
 }

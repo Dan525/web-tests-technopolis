@@ -23,10 +23,18 @@ public abstract class PageBase {
         driver.findElement(locator).click();
     }
 
-    boolean isElementPresent(By by) {
+    protected boolean isElementPresent(By by) {
         try {
             driver.findElement(by);
             return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    protected boolean isElementVisible(By by) {
+        try {
+            return driver.findElement(by).isDisplayed();
         } catch (NoSuchElementException e) {
             return false;
         }

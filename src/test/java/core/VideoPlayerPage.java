@@ -1,45 +1,40 @@
 package core;
 
+import model.TestBot;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import tests.LikeTest;
 
-import java.util.Collections;
-import java.util.List;
-
-public abstract class VideoPlayerPageBase extends PageBase{
+public class VideoPlayerPage extends PageBase{
     public static final By PLAYER_PANEL = By.xpath(".//div[@class='html5-vpl_panel_cnt']");
     public static final By PLAYER_WATCHLATER = By.xpath(".//div[contains(@class,'vpl_watchlater')]");
     public static final By PLAYER_LIKE = By.xpath(".//div[@class='html5-vpl_ac_i' and contains(@al-click,'Like')]");
-    public static final By WATCHLATER_VIDEO = By.xpath(".//a[@id='vv_btn_watchLater']");
+
     public static final By VIDEO_NAME = By.xpath(".//div[contains(@class,'portlet_h__nb textWrap')]");
     public static final By CLOSE_VIDEO = By.xpath(".//div[@id='vpl_close']/child::div");
     public static final By PLAYER = By.xpath(".//video[contains(@class,'display')]");
     public static final By LIKE_COUNT = By.xpath(".//span[@data-module='LikeComponent']/span[contains(@class,'count')]");
-    public static final By EXIT_MENU = By.xpath(".//div[@class='toolbar_dropdown_w h-mod']");
-    public static final By EXIT_BUTTON = By.xpath(".//a[contains(@data-l, 'logout') and text()='Выйти']");
-    public static final By CONFIRM_EXIT = By.xpath(".//input[contains(@data-l, 'confirm') and @value='Выйти']");
+
     public static final By NEXT_VIDEO_NAME = By.xpath(".//div[contains(@class,'vpl_panel-tip_v')]");
     public static final By NEXT_VIDEO_BUTTON = By.xpath(".//div[contains(@class,'vpl_panel_btn') and contains(@al-click,'NextButton')]");
+    public static final String likeFeedbackText = "QA18testbot59 QA18testbot59 считает классным видео «1» ";
 
 
-    protected int likeBefore;
-    protected int likeAfter;
     public String nextVideoName;
     public String actualnextVideoName;
 
-    public VideoPlayerPageBase(WebDriver driver) {
+    public VideoPlayerPage(WebDriver driver) {
         super(driver);
     }
 
     protected void check() {
-        (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
+        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
                 return isElementPresent(PLAYER);
             }
@@ -47,18 +42,25 @@ public abstract class VideoPlayerPageBase extends PageBase{
     }
 
     public void clickWatchLater() {
+        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                new Actions(driver).moveToElement(driver.findElement(PLAYER)).pause(10).build().perform();
+                return driver.findElement(PLAYER_WATCHLATER).isDisplayed();
+            }
+        });
         new Actions(driver).moveToElement(driver.findElement(PLAYER)).click(driver.findElement(PLAYER_WATCHLATER)).build().perform();
     }
 
     public void clickLike() {
-        likeBefore = Integer.parseInt(driver.findElement(LIKE_COUNT).getText());
+        final int likeBefore = getLikeCount();
         new Actions(driver).moveToElement(driver.findElement(PLAYER)).click(driver.findElement(PLAYER_LIKE)).build().perform();
-        try {
-            new WebDriverWait(driver, 2).until(ExpectedConditions.stalenessOf(driver.findElement(LIKE_COUNT)));
-        } catch (TimeoutException e) {
-
-        }
+        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return getLikeCount() == likeBefore + 1;
+            }
+        });
     }
+
 
     public void clickNextVideo() {
         new Actions(driver).moveToElement(driver.findElement(PLAYER)).pause(10).build().perform();
@@ -89,15 +91,36 @@ public abstract class VideoPlayerPageBase extends PageBase{
         Assert.assertEquals(nextVideoName, actualnextVideoName);
     }
 
-    public abstract void checkWatchLater();
+    public String getVideoName() {
+        return driver.findElement(VIDEO_NAME).getText();
+    }
 
-    public abstract void checkLike();
+    public int getLikeCount() {
+        return Integer.parseInt(driver.findElement(LIKE_COUNT).getText());
+    }
 
-    public List<VideoWrapper> videoList(By videoPreview) {
-        if (driver.findElement(videoPreview).isDisplayed()) {
-            List<WebElement> videos = driver.findElements(videoPreview);
-            return VideoTransformer.wrap(videos, driver);
-        }
-        return Collections.emptyList();
+    public void closeVideo() {
+        click(CLOSE_VIDEO);
+    }
+
+    public void checkLike() {
+        likeAfter = Integer.parseInt(driver.findElement(LIKE_COUNT).getText());
+        click(CLOSE_VIDEO);
+
+        UserMainPage checkFeedback = new LoginMainPage(driver).doLogin(new TestBot("89315960060", "q123451234"));
+        String actualLikeFeedbackText = checkFeedback.checkFeedback();
+        Assert.assertEquals(likeFeedbackText, actualLikeFeedbackText);
+        Assert.assertEquals(likeBefore,likeAfter - 1);
+        /*if (actualLikeFeedbackText.equals(likeFeedbackText) && likeBefore == likeAfter - 1) {
+            System.out.println("Лайк поставлен! Тест пройден!");
+            System.out.println("Число лайков до нажатия: " + likeBefore);
+            System.out.println("Число лайков после нажатия: " + likeAfter);
+        } else {
+            System.out.println("Тест не пройден!");
+            System.out.println("Число лайков до нажатия: " + likeBefore);
+            System.out.println("Число лайков после нажатия: " + likeAfter);
+            System.out.println("Ожидаемая строка: " + likeFeedbackText);
+            System.out.println("Полученная строка: " + actualLikeFeedbackText);
+        }*/
     }
 }

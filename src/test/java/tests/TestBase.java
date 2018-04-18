@@ -1,8 +1,9 @@
 package tests;
 
+import core.*;
+import model.TestBot;
 import org.junit.After;
 import org.junit.Before;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -19,6 +20,12 @@ public class TestBase {
     @Before
     public void setUp() throws Exception {
         init();
+        UserMainPage userMainPage = new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
+        FriendsMainPage friendsMainPage = userMainPage.clickFriendsOnToolbar();
+        FriendPage friendPage = friendsMainPage.chooseFriend();
+        FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
+        friendVideoPage.selectPlaylist();
+        friendVideoPage.selectVideo();
     }
 
     @After
@@ -28,7 +35,7 @@ public class TestBase {
 
     public void init() {
         driver = new ChromeDriver();
-        driver.manage().window().setSize(new Dimension(1600,1200));
+        driver.manage().window().maximize();
         baseUrl = "https://ok.ru/";
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         driver.get(baseUrl + "/");

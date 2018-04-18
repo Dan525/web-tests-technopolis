@@ -3,7 +3,7 @@ package core;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class FriendsMainPage extends PageBase {
+public class FriendsMainPage extends Toolbar {
 
     public static final By TEST_FRIEND = By.xpath(".//a[@class='o' and text()='Денис Борисов']");
 

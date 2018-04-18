@@ -16,11 +16,11 @@ public class VideoWrapper {
     public VideoWrapper(WebElement mainElement, WebDriver driver) {
         this.driver = driver;
         this.mainElement = mainElement;
-        this.videoName = mainElement.findElement(VIDEO_NAME).getText();
-        Preconditions.checkNotNull(videoName, "Название видео не может быть пустым");
     }
 
     public String getVideoName() {
+        videoName = mainElement.findElement(VIDEO_NAME).getText();
+        Preconditions.checkNotNull(videoName, "Название видео не может быть пустым");
         return videoName;
     }
 }

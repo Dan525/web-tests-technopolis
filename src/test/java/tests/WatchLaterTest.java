@@ -1,17 +1,23 @@
 package tests;
 
-import core.*;
-import model.TestBot;
+import core.FriendVideoPage;
+import core.VideoPage;
+import core.VideoPlayerPage;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class WatchLaterTest extends TestBase {
 
     @Test
     public void watchLaterTest() throws Exception {
-        new LoginMainPage(driver).doLogin(new TestBot("89315960060", "q123451234"));
-        VideoPage videoPage = new UserMainPage(driver).clickVideoOnToolbar();
-        WatchLaterInterface videoPlayerPage = videoPage.clickOnFirstVideo(VideoPage.POPULAR_VIDEO).get();
+        VideoPlayerPage videoPlayerPage = new VideoPlayerPage(driver);
         videoPlayerPage.clickWatchLater();
-        videoPlayerPage.checkWatchLater();
+        String videoName = videoPlayerPage.getVideoName();
+        videoPlayerPage.closeVideo();
+        VideoPage videoPage = new FriendVideoPage(driver).clickVideoOnToolbar();
+        videoPage.clickMyVideo();
+        videoPage.clickWatchLaterSection();
+        String watchLaterVideoName = videoPage.videoList().get(0).getVideoName();
+        Assert.assertEquals("Видео отсутствует в отложенных", videoName, watchLaterVideoName);
     }
 }
