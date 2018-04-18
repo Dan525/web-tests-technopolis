@@ -1,6 +1,5 @@
 package core;
 
-import model.TestBot;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
@@ -9,7 +8,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import tests.LikeTest;
 
 public class VideoPlayerPage extends PageBase{
     public static final By PLAYER_PANEL = By.xpath(".//div[@class='html5-vpl_panel_cnt']");
@@ -23,7 +21,7 @@ public class VideoPlayerPage extends PageBase{
 
     public static final By NEXT_VIDEO_NAME = By.xpath(".//div[contains(@class,'vpl_panel-tip_v')]");
     public static final By NEXT_VIDEO_BUTTON = By.xpath(".//div[contains(@class,'vpl_panel_btn') and contains(@al-click,'NextButton')]");
-    public static final String likeFeedbackText = "QA18testbot59 QA18testbot59 считает классным видео «1» ";
+
 
 
     public String nextVideoName;
@@ -102,7 +100,7 @@ public class VideoPlayerPage extends PageBase{
     public void closeVideo() {
         click(CLOSE_VIDEO);
     }
-
+/*
     public void checkLike() {
         likeAfter = Integer.parseInt(driver.findElement(LIKE_COUNT).getText());
         click(CLOSE_VIDEO);
@@ -121,6 +119,6 @@ public class VideoPlayerPage extends PageBase{
             System.out.println("Число лайков после нажатия: " + likeAfter);
             System.out.println("Ожидаемая строка: " + likeFeedbackText);
             System.out.println("Полученная строка: " + actualLikeFeedbackText);
-        }*/
-    }
+        }
+    }*/
 }
