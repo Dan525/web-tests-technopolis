@@ -51,7 +51,14 @@ public class VideoPlayerPage extends PageBase{
 
     public void clickLike() {
         final int likeBefore = getLikeCount();
-        new Actions(driver).moveToElement(driver.findElement(PLAYER)).click(driver.findElement(PLAYER_LIKE)).build().perform();
+         //.pause(10).build().perform();
+        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                new Actions(driver).moveToElement(driver.findElement(PLAYER)).build().perform();
+                return isElementVisible(PLAYER_LIKE);
+            }
+        });
+        click(PLAYER_LIKE);
         new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
                 return getLikeCount() == likeBefore + 1;
