@@ -1,6 +1,7 @@
 package model;
 
 public class TestBot {
+
     private final String login;
     private final String password;
 

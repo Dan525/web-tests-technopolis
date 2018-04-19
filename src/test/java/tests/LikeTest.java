@@ -21,8 +21,8 @@ public class LikeTest extends TestBase {
         LoginMainPage loginMainPage = friendVideoPage.confirmExit();
         UserMainPage userMainPage = loginMainPage.doLogin(new TestBot("89315960060", "q123451234"));
         userMainPage.clickFeedback();
-        String actualLikeFeedbackText = userMainPage.getLikeFeedbackText();
+        String actualLikeFeedbackText = userMainPage.getActualLikeFeedbackText();
         String likeFeedbackText = userMainPage.getLikeFeedbackText();
-        Assert.assertEquals("Текст не совпадает", likeFeedbackText, actualLikeFeedbackText);
+        Assert.assertEquals("Текст уведомления о лайке не совпадает", likeFeedbackText, actualLikeFeedbackText);
     }
 }

@@ -1,14 +1,17 @@
 package tests;
 
-/*
+
+import core.VideoPlayerPage;
+import org.junit.Assert;
+import org.junit.Test;
+
 public class NextVideoTest extends TestBase {
     @Test
     public void nextVideoTest() throws Exception {
-        new LoginMainPage(driver).doLogin(new TestBot("QA18testbot59", "QA18testbot"));
-        FriendPage friendPage = new UserMainPage(driver).clickFriendsOnToolbar().chooseFriend();
-        friendPage.selectVideo();
-        VideoPlayerPage videoPlayer = new VideoPlayerPageFuncDisabled(driver);
-        videoPlayer.clickNextVideo();
-        videoPlayer.checkNextVideo();
+        VideoPlayerPage videoPlayerPage = new VideoPlayerPage(driver);
+        String nextVideoName = videoPlayerPage.getNextVideoName();
+        videoPlayerPage.clickNextVideo();
+        String actualVideoName = videoPlayerPage.getVideoName();
+        Assert.assertEquals("Названия видео не совпадают", nextVideoName, actualVideoName);
     }
-}*/
+}

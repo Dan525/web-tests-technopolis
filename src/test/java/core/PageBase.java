@@ -3,6 +3,7 @@ package core;
 import org.openqa.selenium.*;
 
 public abstract class PageBase {
+
     protected WebDriver driver;
     private boolean acceptNextAlert = true;
 

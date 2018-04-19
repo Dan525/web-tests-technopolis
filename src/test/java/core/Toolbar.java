@@ -2,6 +2,8 @@ package core;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public abstract class Toolbar extends PageBase {
 
@@ -20,37 +22,77 @@ public abstract class Toolbar extends PageBase {
     }
 
     public VideoPage clickVideoOnToolbar() {
+        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return isElementPresent(VIDEO);
+            }
+        });
         click(VIDEO);
         return new VideoPage(driver);
     }
 
     public FriendsMainPage clickFriendsOnToolbar() {
+        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return isElementPresent(FRIENDS);
+            }
+        });
         click(FRIENDS);
         return new FriendsMainPage(driver);
     }
 
     public void clickGroupsOnToolbar() {
+        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return isElementPresent(GROUPS);
+            }
+        });
         click(GROUPS);
     }
 
     public void clickUserMenu() {
+        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return isElementPresent(USER_MENU);
+            }
+        });
         click(USER_MENU);
     }
 
     public void clickExitButton() {
+        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return isElementPresent(EXIT_BUTTON);
+            }
+        });
         click(EXIT_BUTTON);
     }
 
     public LoginMainPage confirmExit() {
+        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return isElementPresent(CONFIRM_EXIT);
+            }
+        });
         click(CONFIRM_EXIT);
         return new LoginMainPage(driver);
     }
 
     public void clickFeedback() {
+        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return isElementPresent(FEEDBACK);
+            }
+        });
         click(FEEDBACK);
     }
 
     public String getActualLikeFeedbackText() {
+        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return isElementPresent(FEEDBACK_LIKE_VIDEO);
+            }
+        });
         return driver.findElements(FEEDBACK_LIKE_VIDEO).get(0).getText();
     }
 

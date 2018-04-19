@@ -4,7 +4,7 @@ import model.TestBot;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class LoginMainPage extends HelperBase{
+public class LoginMainPage extends PageBase{
 
     public LoginMainPage(WebDriver driver) {
         super(driver);

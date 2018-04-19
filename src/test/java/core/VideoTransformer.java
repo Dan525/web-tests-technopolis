@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class VideoTransformer {
+
     public static List<VideoWrapper> wrap(List<WebElement> elements, WebDriver driver) {
         if (elements.isEmpty()) {
             return Collections.emptyList();

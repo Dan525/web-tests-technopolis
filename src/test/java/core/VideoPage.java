@@ -5,14 +5,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.util.Collections;
 import java.util.List;
 
 public class VideoPage extends Toolbar {
 
-    public static final By POPULAR_VIDEO = By.xpath(".//a[@id='vv_btn_suggestedAlbums']");
-    public static final By SLIDER_VIDEO = By.xpath(".//a[contains(@class,'ucard') and text()='Популярное видео']/ancestor::div[@class='vl_subscriptions']//a[contains(@class, 'vid-card v')][1]");
     public static final By SECTIONS_BLOCK = By.xpath(".//ul[@class='mml_cat_ul']");
     public static final By SEARCH_VIDEO = By.xpath(".//div[@class='it_w search-input' and @id='vv-search']");
     public static final By MY_VIDEO = By.xpath(".//a[@id='vv_btn_myVideo']");
@@ -24,7 +21,7 @@ public class VideoPage extends Toolbar {
     }
 
     protected void check() {
-        (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
+        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
                 return isElementPresent(SECTIONS_BLOCK) && isElementPresent(SEARCH_VIDEO);
             }
@@ -32,31 +29,28 @@ public class VideoPage extends Toolbar {
     }
 
     public void clickMyVideo() {
+        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return isElementPresent(MY_VIDEO);
+            }
+        });
         click(MY_VIDEO);
     }
 
     public void clickWatchLaterSection() {
+        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return isElementPresent(WATCHLATER_VIDEO);
+            }
+        });
         click(WATCHLATER_VIDEO);
     }
 
     public List<VideoWrapper> videoList() {
-        if (driver.findElement(VIDEO_PREVIEW).isDisplayed()) {
+        if (isElementVisible(VIDEO_PREVIEW)) {
             List<WebElement> videos = driver.findElements(VIDEO_PREVIEW);
             return VideoTransformer.wrap(videos, driver);
         }
         return Collections.emptyList();
     }
-
-
-    /*public WatchLaterFactory clickOnFirstVideo(By videoSection) {
-        click(videoSection);
-        click(SLIDER_VIDEO);
-        (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver driver) {
-                return isElementPresent(PLAYER_PANEL);
-            }
-        });
-        return new WatchLaterFactory(driver);
-    }*/
-
 }
