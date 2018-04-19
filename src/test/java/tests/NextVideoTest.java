@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class NextVideoTest extends TestBase {
+
     @Test
     public void nextVideoTest() throws Exception {
         VideoPlayerPage videoPlayerPage = new VideoPlayerPage(driver);
