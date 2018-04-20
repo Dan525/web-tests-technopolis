@@ -1,12 +1,22 @@
 package tests;
 
-import core.FriendVideoPage;
-import core.VideoPage;
-import core.VideoPlayerPage;
+import core.*;
+import model.TestBot;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class WatchLaterTest extends TestBase {
+
+    @Before
+    public void preCondition() throws Exception {
+        UserMainPage userMainPage = new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
+        FriendsMainPage friendsMainPage = userMainPage.clickFriendsOnToolbar();
+        FriendPage friendPage = friendsMainPage.chooseFriend();
+        FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
+        friendVideoPage.selectPlaylist();
+        friendVideoPage.selectVideo();
+    }
 
     @Test
     public void watchLaterTest() throws Exception {

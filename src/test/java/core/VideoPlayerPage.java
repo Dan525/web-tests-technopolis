@@ -33,7 +33,7 @@ public class VideoPlayerPage extends PageBase{
     public void clickWatchLater() {
         new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
-                new Actions(driver).moveToElement(driver.findElement(PLAYER)).pause(10).build().perform();
+                new Actions(driver).moveToElement(driver.findElement(PLAYER)).build().perform();
                 return driver.findElement(PLAYER_WATCHLATER).isDisplayed();
             }
         });

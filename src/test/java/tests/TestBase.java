@@ -1,7 +1,5 @@
 package tests;
 
-import core.*;
-import model.TestBot;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.WebDriver;
@@ -20,12 +18,6 @@ public class TestBase {
     @Before
     public void setUp() throws Exception {
         init();
-        UserMainPage userMainPage = new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
-        FriendsMainPage friendsMainPage = userMainPage.clickFriendsOnToolbar();
-        FriendPage friendPage = friendsMainPage.chooseFriend();
-        FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
-        friendVideoPage.selectPlaylist();
-        friendVideoPage.selectVideo();
     }
 
     @After

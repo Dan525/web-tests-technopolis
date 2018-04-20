@@ -1,11 +1,23 @@
 package tests;
 
 
-import core.VideoPlayerPage;
+import core.*;
+import model.TestBot;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class NextVideoTest extends TestBase {
+
+    @Before
+    public void setUp() throws Exception {
+        UserMainPage userMainPage = new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
+        FriendsMainPage friendsMainPage = userMainPage.clickFriendsOnToolbar();
+        FriendPage friendPage = friendsMainPage.chooseFriend();
+        FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
+        friendVideoPage.selectPlaylist();
+        friendVideoPage.selectVideo();
+    }
 
     @Test
     public void nextVideoTest() throws Exception {
