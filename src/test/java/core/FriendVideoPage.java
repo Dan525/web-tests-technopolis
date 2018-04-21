@@ -1,5 +1,6 @@
 package core;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -23,6 +24,7 @@ public class FriendVideoPage extends Toolbar {
     }
 
     public FriendPlaylistPage selectPlaylist() {
+        Assert.assertTrue("Отсутствует необходимый плейлист", isElementPresent(TEST_FRIEND_PLAYLIST));
         click(TEST_FRIEND_PLAYLIST);
         return new FriendPlaylistPage(driver);
     }

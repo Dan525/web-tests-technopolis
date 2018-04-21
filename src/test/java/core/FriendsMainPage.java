@@ -1,5 +1,6 @@
 package core;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -23,6 +24,7 @@ public class FriendsMainPage extends Toolbar {
     }
 
     public FriendPage chooseFriend() {
+        Assert.assertTrue("Отсутствует карточка друга в списке друзей", isElementPresent(TEST_FRIEND));
         click(TEST_FRIEND);
         return new FriendPage(driver);
     }

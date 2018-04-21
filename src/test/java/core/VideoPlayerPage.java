@@ -1,5 +1,6 @@
 package core;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -40,22 +41,25 @@ public class VideoPlayerPage extends PageBase{
 
     public void clickWatchLater() {
         new Actions(driver).moveToElement(driver.findElement(PLAYER)).build().perform();
+        Assert.assertTrue("Отсутствует кнопка \"Добавить в отложенные\"", isElementPresent(PLAYER_WATCHLATER));
         click(PLAYER_WATCHLATER);
     }
 
     public void clickLike() {
         new Actions(driver).moveToElement(driver.findElement(PLAYER)).build().perform();
+        Assert.assertTrue("Отсутствует кнопка \"Класс\"", isElementPresent(PLAYER_LIKE));
         click(PLAYER_LIKE);
     }
 
     public void clickNextVideo() {
         new Actions(driver).moveToElement(driver.findElement(PLAYER)).build().perform();
+        Assert.assertTrue("Отсутствует кнопка \"Следующее видео\"", isElementPresent(NEXT_VIDEO_BUTTON));
         click(NEXT_VIDEO_BUTTON);
     }
 
     public String getNextVideoName() {
         new Actions(driver).moveToElement(driver.findElement(PLAYER)).build().perform();
-        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
+        new WebDriverWait(driver, 5).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
                  new Actions(driver).moveToElement(driver.findElement(NEXT_VIDEO_BUTTON)).build().perform();
                  return !(driver.findElement(NEXT_VIDEO_NAME).getText().isEmpty());
@@ -73,6 +77,7 @@ public class VideoPlayerPage extends PageBase{
     }
 
     public void closeVideo() {
+        Assert.assertTrue("Отсутствует кнопка \"Закрыть видео\"", isElementPresent(CLOSE_VIDEO));
         click(CLOSE_VIDEO);
     }
 }

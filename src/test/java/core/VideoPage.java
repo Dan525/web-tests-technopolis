@@ -30,10 +30,12 @@ public class VideoPage extends Toolbar {
     }
 
     public void clickMyVideo() {
+        Assert.assertTrue("Отсутствует кнопка \"Моё видео\"", isElementPresent(MY_VIDEO));
         click(MY_VIDEO);
     }
 
     public void clickWatchLaterSection() {
+        Assert.assertTrue("Отсутствует кнопка \"Отложенное видео\"", isElementPresent(WATCHLATER_VIDEO));
         click(WATCHLATER_VIDEO);
     }
 

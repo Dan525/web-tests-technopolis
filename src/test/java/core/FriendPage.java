@@ -1,5 +1,6 @@
 package core;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -23,6 +24,7 @@ public class FriendPage extends Toolbar {
     }
 
     public FriendVideoPage selectVideoSection() {
+        Assert.assertTrue("Отсутствует кнопка \"Видео\" на странице друга", isElementPresent(TEST_FRIEND_VIDEOS));
         click(TEST_FRIEND_VIDEOS);
         return new FriendVideoPage(driver);
     }

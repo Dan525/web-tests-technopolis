@@ -1,5 +1,6 @@
 package core;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -20,33 +21,35 @@ public abstract class Toolbar extends PageBase {
     }
 
     public VideoPage clickVideoOnToolbar() {
+        Assert.assertTrue("Отсутствует кнопка \"Видео\" на тулбаре", isElementPresent(VIDEO));
         click(VIDEO);
         return new VideoPage(driver);
     }
 
     public FriendsMainPage clickFriendsOnToolbar() {
+        Assert.assertTrue("Отсутствует кнопка \"Друзья\" на тулбаре", isElementPresent(FRIENDS));
         click(FRIENDS);
         return new FriendsMainPage(driver);
     }
 
-    public void clickGroupsOnToolbar() {
-        click(GROUPS);
-    }
-
     public void clickUserMenu() {
+        Assert.assertTrue("Отсутствует кнопка для открытия меню пользователя", isElementPresent(USER_MENU));
         click(USER_MENU);
     }
 
     public void clickExitButton() {
+        Assert.assertTrue("Отсутствует кнопка \"Выйти\"", isElementPresent(EXIT_BUTTON));
         click(EXIT_BUTTON);
     }
 
     public LoginMainPage confirmExit() {
+        Assert.assertTrue("Отсутствует кнопка подтверждения выхода", isElementPresent(CONFIRM_EXIT));
         click(CONFIRM_EXIT);
         return new LoginMainPage(driver);
     }
 
     public void clickFeedback() {
+        Assert.assertTrue("Отсутствует кнопка \"События\" на тулбаре", isElementPresent(FEEDBACK));
         click(FEEDBACK);
     }
 
