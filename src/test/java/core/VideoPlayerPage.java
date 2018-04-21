@@ -32,7 +32,7 @@ public class VideoPlayerPage extends PageBase{
         new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
                 new Actions(driver).moveToElement(driver.findElement(PLAYER)).build().perform();
-                String timerText = driver.findElement(TIMER).getText();
+                final String timerText = driver.findElement(TIMER).getText();
                 return !(timerText.contains("0:00")) && !(timerText.isEmpty());
             }
         });
