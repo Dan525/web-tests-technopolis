@@ -2,8 +2,6 @@ package core;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class FriendPage extends Toolbar {
 
@@ -18,11 +16,6 @@ public class FriendPage extends Toolbar {
     }
 
     public FriendVideoPage selectVideoSection() {
-        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver driver) {
-                return isElementPresent(TEST_FRIEND_VIDEOS);
-            }
-        });
         click(TEST_FRIEND_VIDEOS);
         return new FriendVideoPage(driver);
     }

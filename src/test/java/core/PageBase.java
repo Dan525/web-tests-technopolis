@@ -3,6 +3,7 @@ package core;
 import com.google.common.base.Preconditions;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
@@ -110,5 +111,9 @@ public abstract class PageBase {
         Preconditions.checkState(millisecondsBetweenChecks > 0, "milliseconds count between checks must be not 0");
         Preconditions.checkState(millisecondsBetweenChecks < (maxCheckTimeInSeconds * 1000),
                 "Millis between checks must be less than max seconds to wait");
+    }
+
+    public void waitStalenessOfElement(final WebElement webElement) {
+        new WebDriverWait(driver, 3).until(ExpectedConditions.stalenessOf(webElement));
     }
 }

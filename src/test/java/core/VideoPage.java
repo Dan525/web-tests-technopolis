@@ -1,5 +1,6 @@
 package core;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -29,21 +30,28 @@ public class VideoPage extends Toolbar {
     }
 
     public void clickMyVideo() {
-        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver driver) {
-                return isElementPresent(MY_VIDEO);
-            }
-        });
         click(MY_VIDEO);
     }
 
     public void clickWatchLaterSection() {
-        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver driver) {
-                return isElementPresent(WATCHLATER_VIDEO);
-            }
-        });
         click(WATCHLATER_VIDEO);
+    }
+
+    public Boolean checkVideoByName(String videoName, List<VideoWrapper> videoList) {
+        if (videoList.isEmpty()) return false;
+        for (VideoWrapper video:videoList) {
+            if (video.getVideoName().equals(videoName)) return true;
+        }
+        return false;
+    }
+
+    public void clickOnVideoByName(String videoName, List<VideoWrapper> videoList) {
+        Assert.assertFalse("Список видео не должен быть пустым", videoList.isEmpty());
+        for (VideoWrapper video:videoList) {
+            if (video.getVideoName().equals(videoName)) {
+                click(video.getNameLocator());
+            }
+        }
     }
 
     public List<VideoWrapper> videoList() {

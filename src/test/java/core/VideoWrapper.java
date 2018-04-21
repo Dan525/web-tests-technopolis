@@ -23,4 +23,8 @@ public class VideoWrapper {
         Preconditions.checkNotNull(videoName, "Название видео не может быть пустым");
         return videoName;
     }
+
+    public By getNameLocator() {
+        return VIDEO_NAME;
+    }
 }

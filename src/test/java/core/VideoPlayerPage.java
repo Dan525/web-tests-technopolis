@@ -17,6 +17,7 @@ public class VideoPlayerPage extends PageBase{
     public static final By LIKE_COUNT = By.xpath(".//span[@data-module='LikeComponent']/span[contains(@class,'count')]");
     public static final By NEXT_VIDEO_NAME = By.xpath(".//div[contains(@class,'vpl_panel-tip_v')]");
     public static final By NEXT_VIDEO_BUTTON = By.xpath(".//div[contains(@class,'vpl_panel_btn') and contains(@al-click,'NextButton')]");
+    public static final By TIMER = By.xpath(".//div[@class='html5-vpl_time_t']");
 
     public VideoPlayerPage(WebDriver driver) {
         super(driver);
@@ -25,92 +26,53 @@ public class VideoPlayerPage extends PageBase{
     protected void check() {
         new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
-                return isElementPresent(PLAYER);
+                return isElementPresent(TIMER);
+            }
+        });
+        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                new Actions(driver).moveToElement(driver.findElement(PLAYER)).build().perform();
+                String timerText = driver.findElement(TIMER).getText();
+                return !(timerText.contains("0:00")) && !(timerText.isEmpty());
             }
         });
     }
 
     public void clickWatchLater() {
-        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver driver) {
-                new Actions(driver).moveToElement(driver.findElement(PLAYER)).build().perform();
-                return driver.findElement(PLAYER_WATCHLATER).isDisplayed();
-            }
-        });
-        new Actions(driver).moveToElement(driver.findElement(PLAYER)).click(driver.findElement(PLAYER_WATCHLATER)).build().perform();
+        new Actions(driver).moveToElement(driver.findElement(PLAYER)).build().perform();
+        click(PLAYER_WATCHLATER);
     }
 
     public void clickLike() {
-        final int likeBefore = getLikeCount();
-        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver driver) {
-                new Actions(driver).moveToElement(driver.findElement(PLAYER)).build().perform();
-                return isElementVisible(PLAYER_LIKE);
-            }
-        });
+        new Actions(driver).moveToElement(driver.findElement(PLAYER)).build().perform();
         click(PLAYER_LIKE);
-        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver driver) {
-                return getLikeCount() == likeBefore + 1;
-            }
-        });
     }
 
     public void clickNextVideo() {
-        final String previousVideoName = getVideoName();
-        new Actions(driver).moveToElement(driver.findElement(PLAYER)).pause(10).build().perform();
-        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver driver) {
-                return isElementVisible(NEXT_VIDEO_BUTTON);
-            }
-        });
+        new Actions(driver).moveToElement(driver.findElement(PLAYER)).build().perform();
         click(NEXT_VIDEO_BUTTON);
-        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver driver) {
-                return !(getVideoName().equals(previousVideoName));
-            }
-        });
     }
 
     public String getNextVideoName() {
         new Actions(driver).moveToElement(driver.findElement(PLAYER)).build().perform();
         new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
-                if (isElementVisible(NEXT_VIDEO_BUTTON)) {
-                    new Actions(driver).moveToElement(driver.findElement(NEXT_VIDEO_BUTTON)).build().perform();
-                    return !(driver.findElement(NEXT_VIDEO_NAME).getText().isEmpty());
-                }
-                return false;
+                 new Actions(driver).moveToElement(driver.findElement(NEXT_VIDEO_BUTTON)).build().perform();
+                 return !(driver.findElement(NEXT_VIDEO_NAME).getText().isEmpty());
             }
         });
-        new Actions(driver).moveToElement(driver.findElement(NEXT_VIDEO_BUTTON)).build().perform();
         return driver.findElement(NEXT_VIDEO_NAME).getText();
     }
 
     public String getVideoName() {
-        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver driver) {
-                return isElementPresent(VIDEO_NAME);
-            }
-        });
         return driver.findElement(VIDEO_NAME).getText();
     }
 
     public int getLikeCount() {
-        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver driver) {
-                return isElementPresent(LIKE_COUNT);
-            }
-        });
         return Integer.parseInt(driver.findElement(LIKE_COUNT).getText());
     }
 
     public void closeVideo() {
-        new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver driver) {
-                return isElementPresent(CLOSE_VIDEO);
-            }
-        });
         click(CLOSE_VIDEO);
     }
 }

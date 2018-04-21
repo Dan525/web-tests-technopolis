@@ -14,8 +14,8 @@ public class WatchLaterTest extends TestBase {
         FriendsMainPage friendsMainPage = userMainPage.clickFriendsOnToolbar();
         FriendPage friendPage = friendsMainPage.chooseFriend();
         FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
-        friendVideoPage.selectPlaylist();
-        friendVideoPage.selectVideo();
+        FriendPlaylistPage friendPlaylistPage = friendVideoPage.selectPlaylist();
+        friendPlaylistPage.selectVideo();
     }
 
     @Test
