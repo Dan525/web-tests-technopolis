@@ -51,7 +51,8 @@ public class VideoPage extends Toolbar {
         Assert.assertFalse("Список видео не должен быть пустым", videoList.isEmpty());
         for (VideoWrapper video:videoList) {
             if (video.getVideoName().equals(videoName)) {
-                click(video.getNameLocator());
+                video.getMainElement().click();
+                break;
             }
         }
     }

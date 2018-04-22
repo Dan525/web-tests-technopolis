@@ -24,7 +24,7 @@ public class VideoWrapper {
         return videoName;
     }
 
-    public By getNameLocator() {
-        return VIDEO_NAME;
+    public WebElement getMainElement() {
+        return mainElement;
     }
 }
