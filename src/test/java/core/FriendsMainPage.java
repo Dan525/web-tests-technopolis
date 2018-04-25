@@ -8,8 +8,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class FriendsMainPage extends Toolbar {
 
-    public static final By TEST_FRIEND = By.xpath(".//a[@class='o' and text()='Денис Борисов']");
-    public static final By FRIEND_CARDS_BLOCK = By.xpath(".//ul[@class='ugrid_cnt']");
+    private static final By TEST_FRIEND = By.xpath(".//a[@class='o' and text()='Денис Борисов']");
+    private static final By FRIEND_CARDS_BLOCK = By.xpath(".//ul[@class='ugrid_cnt']");
 
     public FriendsMainPage(WebDriver driver) {
         super(driver);
@@ -26,6 +26,7 @@ public class FriendsMainPage extends Toolbar {
     public FriendPage chooseFriend() {
         Assert.assertTrue("Отсутствует карточка друга в списке друзей", isElementPresent(TEST_FRIEND));
         click(TEST_FRIEND);
+        log("Переход на страницу друга");
         return new FriendPage(driver);
     }
 

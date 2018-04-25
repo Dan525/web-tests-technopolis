@@ -8,8 +8,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class FriendPage extends Toolbar {
 
-    public static final By TEST_FRIEND_VIDEOS = By.xpath(".//a[@class='mctc_navMenuSec' and text()='Видео']");
-    public static final By TEST_FRIEND_TOP_BLOCK = By.xpath(".//div[contains(@id,'MiddleColumnTopCardFriend') and not(contains(@id,'Footer'))]");
+    private static final By TEST_FRIEND_VIDEOS = By.xpath(".//a[@class='mctc_navMenuSec' and text()='Видео']");
+    private static final By TEST_FRIEND_TOP_BLOCK = By.xpath(".//div[contains(@id,'MiddleColumnTopCardFriend') and not(contains(@id,'Footer'))]");
 
     public FriendPage(WebDriver driver) {
         super(driver);
@@ -26,6 +26,7 @@ public class FriendPage extends Toolbar {
     public FriendVideoPage selectVideoSection() {
         Assert.assertTrue("Отсутствует кнопка \"Видео\" на странице друга", isElementPresent(TEST_FRIEND_VIDEOS));
         click(TEST_FRIEND_VIDEOS);
+        log("Переход на страницу с видео друга");
         return new FriendVideoPage(driver);
     }
 }

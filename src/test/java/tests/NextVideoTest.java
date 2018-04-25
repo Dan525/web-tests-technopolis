@@ -12,23 +12,30 @@ public class NextVideoTest extends TestBase {
 
     @Before
     public void preCondition() throws Exception {
-        UserMainPage userMainPage = new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
-        FriendsMainPage friendsMainPage = userMainPage.clickFriendsOnToolbar();
-        FriendPage friendPage = friendsMainPage.chooseFriend();
-        FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
-        FriendPlaylistPage friendPlaylistPage = friendVideoPage.selectPlaylist();
-        friendPlaylistPage.selectVideo();
+        log("Авторизация");
+        System.out.println("***************************************************");
+        new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
     }
 
     @Test
     public void nextVideoTest() throws Exception {
-        VideoPlayerPage videoPlayerPage = new VideoPlayerPage(driver);
+        System.out.println();
+        log("Запущен тест");
+        System.out.println("***************************************************");
+        UserMainPage userMainPage = new UserMainPage(driver);
+        FriendsMainPage friendsMainPage = userMainPage.clickFriendsOnToolbar();
+        FriendPage friendPage = friendsMainPage.chooseFriend();
+        FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
+        FriendPlaylistPage friendPlaylistPage = friendVideoPage.selectPlaylist();
+        VideoPlayerPage videoPlayerPage = friendPlaylistPage.selectVideo();
         String nextVideoName = videoPlayerPage.getNextVideoName();
+        log("Ожидаемое название следующего видео: " + nextVideoName);
         final WebElement timer = driver.findElement(videoPlayerPage.TIMER);
         videoPlayerPage.clickNextVideo();
         videoPlayerPage.waitStalenessOfElement(timer);
         VideoPlayerPage nextVideoPlayerPage = new VideoPlayerPage(driver);
         String actualVideoName = nextVideoPlayerPage.getVideoName();
+        log("Название следующего видео: " + actualVideoName);
         Assert.assertEquals("Названия видео не совпадают", nextVideoName, actualVideoName);
     }
 }

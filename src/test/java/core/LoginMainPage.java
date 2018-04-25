@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LoginMainPage extends PageBase{
 
-    public static final By TEXT_FIELDS = By.xpath(".//div[@class='it_w']");
+    private static final By TEXT_FIELDS = By.xpath(".//div[@class='it_w']");
 
     public LoginMainPage(WebDriver driver) {
         super(driver);
@@ -26,6 +26,7 @@ public class LoginMainPage extends PageBase{
         type(testBot.getLogin(), By.id("field_email"));
         type(testBot.getPassword(), By.id("field_password"));
         click(By.xpath(".//*[contains(@value,'Войти')]"));
+        log("Переход на главную страницу пользователя");
         return new UserMainPage(driver);
     }
 }

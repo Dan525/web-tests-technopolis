@@ -8,8 +8,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class FriendPlaylistPage extends Toolbar {
 
-    public static final By TEST_FRIEND_VIDEO = By.xpath(".//a[@class='video-card_n ellip' and text()='1']");
-    public static final By CHANNEL_PANEL = By.xpath(".//div[@class='channel-panel h-mod']");
+    private static final By TEST_FRIEND_VIDEO = By.xpath(".//a[@class='video-card_n ellip' and text()='1']");
+    private static final By CHANNEL_PANEL = By.xpath(".//div[@class='channel-panel h-mod']");
 
     public FriendPlaylistPage(WebDriver driver) {
         super(driver);
@@ -26,6 +26,7 @@ public class FriendPlaylistPage extends Toolbar {
     public VideoPlayerPage selectVideo() {
         Assert.assertTrue("Отсутствует необходимое видео в плейлисте друга", isElementPresent(TEST_FRIEND_VIDEO));
         click(TEST_FRIEND_VIDEO);
+        log("Переход на страницу с видео");
         return new VideoPlayerPage(driver);
     }
 }

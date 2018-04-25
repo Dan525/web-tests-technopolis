@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 
 public class VideoWrapper {
 
-    public static final By VIDEO_NAME = By.xpath(".//div[@class='vid-card_n']");
+    private static final By VIDEO_NAME = By.xpath(".//div[@class='vid-card_n']");
     private WebElement mainElement;
     private WebDriver driver;
     private String videoName;

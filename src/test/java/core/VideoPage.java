@@ -7,19 +7,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 public class VideoPage extends Toolbar {
 
-    public static final By SECTIONS_BLOCK = By.xpath(".//ul[@class='mml_cat_ul']");
-    public static final By SEARCH_VIDEO = By.xpath(".//div[@class='it_w search-input' and @id='vv-search']");
-    public static final By MY_VIDEO = By.xpath(".//a[@id='vv_btn_myVideo']");
-    public static final By VIDEO_PREVIEW = By.xpath(".//div[contains(@class,'vid-card js-frozen js-watched')]");
-    public static final By WATCHLATER_VIDEO = By.xpath(".//a[@id='vv_btn_watchLater']");
+    private static final By SECTIONS_BLOCK = By.xpath(".//ul[@class='mml_cat_ul']");
+    private static final By SEARCH_VIDEO = By.xpath(".//div[@class='it_w search-input' and @id='vv-search']");
+    private static final By MY_VIDEO = By.xpath(".//a[@id='vv_btn_myVideo']");
+    private static final By VIDEO_PREVIEW = By.xpath(".//div[contains(@class,'vid-card js-frozen js-watched')]");
+    private static final By WATCHLATER_VIDEO = By.xpath(".//a[@id='vv_btn_watchLater']");
 
     public VideoPage(WebDriver driver) {
         super(driver);
@@ -36,24 +33,28 @@ public class VideoPage extends Toolbar {
     public void clickMyVideo() {
         Assert.assertTrue("Отсутствует кнопка \"Моё видео\"", isElementPresent(MY_VIDEO));
         click(MY_VIDEO);
+        log("Переход на страницу \"Моё видео\"");
     }
 
     public void clickWatchLaterSection() {
         Assert.assertTrue("Отсутствует кнопка \"Отложенное видео\"", isElementPresent(WATCHLATER_VIDEO));
         click(WATCHLATER_VIDEO);
+        log("Переход на страницу \"Отложенное видео\"");
     }
 
-    DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-
     public Boolean checkVideoByName(String videoName, List<VideoWrapper> videoList) {
-        System.out.println("Зашел в метод: " + dateFormat.format(new Date()));
+        log("Поиск в списке видео с названием \"" + videoName + "\"");
         if (videoList.isEmpty()) {
-            System.out.println("Выполнил условие в методе: " + dateFormat.format(new Date()));
+            log("Список пуст");
             return false;
         }
         for (VideoWrapper video:videoList) {
-            if (video.getVideoName().equals(videoName)) return true;
+            if (video.getVideoName().equals(videoName)) {
+                log("Видео с названием \"" + videoName + "\" найдено");
+                return true;
+            }
         }
+        log("Видео с названием \"" + videoName + "\" отсутствует");
         return false;
     }
 
@@ -62,19 +63,19 @@ public class VideoPage extends Toolbar {
         for (VideoWrapper video:videoList) {
             if (video.getVideoName().equals(videoName)) {
                 video.getMainElement().click();
+                log("Переход к видео с названием \"" + videoName + "\"");
                 break;
             }
         }
     }
 
     public List<VideoWrapper> videoList() {
-        System.out.println("Зашел в метод videolist: " + dateFormat.format(new Date()));
+        log("Создание списка обернутых видео элементов");
         if (isElementVisible(VIDEO_PREVIEW)) {
-            System.out.println("Прошел проверку на видимость: " + dateFormat.format(new Date()));
             List<WebElement> videos = driver.findElements(VIDEO_PREVIEW);
             return VideoTransformer.wrap(videos, driver);
         }
-        System.out.println("Не прошел проверку на видимость: " + dateFormat.format(new Date()));
+        log("Видео на странице не найдены - формирование пустого списка");
         return Collections.emptyList();
     }
 }

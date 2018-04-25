@@ -7,12 +7,16 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public abstract class PageBase {
 
     protected WebDriver driver;
     private boolean acceptNextAlert = true;
+    private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
     public PageBase(WebDriver driver) {
 
@@ -54,6 +58,10 @@ public abstract class PageBase {
 
     protected void moveMouseTo(By locator) {
         new Actions(driver).moveToElement(driver.findElement(locator)).build().perform();
+    }
+
+    public void log(String description) {
+        System.out.println(dateFormat.format(new Date()) + " :: " + description);
     }
 
     private boolean isAlertPresent() {
@@ -124,5 +132,6 @@ public abstract class PageBase {
 
     public void waitStalenessOfElement(final WebElement webElement) {
         new WebDriverWait(driver, 3).until(ExpectedConditions.stalenessOf(webElement));
+        log("Элемент обновился");
     }
 }
