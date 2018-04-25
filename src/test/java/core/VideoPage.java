@@ -6,7 +6,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class VideoPage extends Toolbar {
@@ -39,8 +43,14 @@ public class VideoPage extends Toolbar {
         click(WATCHLATER_VIDEO);
     }
 
+    DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
     public Boolean checkVideoByName(String videoName, List<VideoWrapper> videoList) {
-        if (videoList.isEmpty()) return false;
+        System.out.println("Зашел в метод: " + dateFormat.format(new Date()));
+        if (videoList.isEmpty()) {
+            System.out.println("Выполнил условие в методе: " + dateFormat.format(new Date()));
+            return false;
+        }
         for (VideoWrapper video:videoList) {
             if (video.getVideoName().equals(videoName)) return true;
         }
@@ -58,10 +68,13 @@ public class VideoPage extends Toolbar {
     }
 
     public List<VideoWrapper> videoList() {
+        System.out.println("Зашел в метод videolist: " + dateFormat.format(new Date()));
         if (isElementVisible(VIDEO_PREVIEW)) {
+            System.out.println("Прошел проверку на видимость: " + dateFormat.format(new Date()));
             List<WebElement> videos = driver.findElements(VIDEO_PREVIEW);
             return VideoTransformer.wrap(videos, driver);
         }
+        System.out.println("Не прошел проверку на видимость: " + dateFormat.format(new Date()));
         return Collections.emptyList();
     }
 }

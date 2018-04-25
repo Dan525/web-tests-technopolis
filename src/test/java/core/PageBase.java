@@ -2,9 +2,11 @@ package core;
 
 import com.google.common.base.Preconditions;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.util.concurrent.TimeUnit;
 
 public abstract class PageBase {
@@ -40,10 +42,18 @@ public abstract class PageBase {
 
     protected boolean isElementVisible(By by) {
         try {
+            driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
             return driver.findElement(by).isDisplayed();
         } catch (NoSuchElementException e) {
             return false;
         }
+        finally {
+            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        }
+    }
+
+    protected void moveMouseTo(By locator) {
+        new Actions(driver).moveToElement(driver.findElement(locator)).build().perform();
     }
 
     private boolean isAlertPresent() {

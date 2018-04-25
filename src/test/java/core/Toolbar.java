@@ -43,7 +43,7 @@ public abstract class Toolbar extends PageBase {
     }
 
     public LoginMainPage confirmExit() {
-        Assert.assertTrue("Отсутствует кнопка подтверждения выхода", isElementPresent(CONFIRM_EXIT));
+        Assert.assertTrue("Отсутствует кнопка подтверждения выхода", isElementVisible(CONFIRM_EXIT));
         click(CONFIRM_EXIT);
         return new LoginMainPage(driver);
     }

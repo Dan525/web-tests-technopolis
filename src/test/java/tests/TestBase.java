@@ -29,7 +29,7 @@ public class TestBase {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         baseUrl = "https://ok.ru/";
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get(baseUrl + "/");
     }
 
