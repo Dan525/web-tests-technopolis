@@ -28,7 +28,6 @@ public class WatchLaterTest extends TestBase {
         videoPage.clickUserMenu();
         videoPage.clickExitButton();
         videoPage.confirmExit();
-        new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
     }
 
     @Test
@@ -36,7 +35,7 @@ public class WatchLaterTest extends TestBase {
         System.out.println();
         log("Запущен тест");
         System.out.println("***************************************************");
-        UserMainPage userMainPage = new UserMainPage(driver);
+        UserMainPage userMainPage = new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
         FriendsMainPage friendsMainPage = userMainPage.clickFriendsOnToolbar();
         FriendPage friendPage = friendsMainPage.chooseFriend();
         FriendVideoPage friendVideoPage = friendPage.selectVideoSection();

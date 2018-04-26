@@ -27,7 +27,6 @@ public class LikeRemovingTest extends TestBase {
         friendPlaylistPage.clickUserMenu();
         friendPlaylistPage.clickExitButton();
         friendPlaylistPage.confirmExit();
-        new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
     }
 
     @Test
@@ -35,7 +34,7 @@ public class LikeRemovingTest extends TestBase {
         System.out.println();
         log("Запущен тест");
         System.out.println("***************************************************");
-        UserMainPage userMainPage = new UserMainPage(driver);
+        UserMainPage userMainPage = new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
         FriendsMainPage friendsMainPage = userMainPage.clickFriendsOnToolbar();
         FriendPage friendPage = friendsMainPage.chooseFriend();
         FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
@@ -45,7 +44,6 @@ public class LikeRemovingTest extends TestBase {
         log("Количество Классов до нажатия: " + likeBefore);
         final WebElement likeElement = driver.findElement(videoPlayerPage.LIKE_COUNT);
         videoPlayerPage.clickLike();
-        log("Поставлен Класс");
         videoPlayerPage.waitStalenessOfElement(likeElement);
         final int likeAfter = videoPlayerPage.getLikeCount();
         log("Количество Классов после нажатия: " + likeAfter);

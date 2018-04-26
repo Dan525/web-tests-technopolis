@@ -13,7 +13,7 @@ public class VideoPlayerPage extends PageBase{
     private static final By PLAYER_LIKE = By.xpath(".//div[@class='html5-vpl_ac_i' and contains(@al-click,'Like')]");
     private static final By PLAYER_LIKE_TEXT = By.xpath(".//div[@class='html5-vpl_ac_i' and contains(@al-click,'Like')]//div[@class='html5-vpl_ac_i_t']");
     private static final By VIDEO_NAME = By.xpath(".//div[contains(@class,'portlet_h__nb textWrap')]");
-    private static final By CLOSE_VIDEO = By.xpath(".//div[@id='vpl_close']/child::div");
+    private static final By CLOSE_VIDEO = By.xpath(".//div[@id='vpl_close']/div");
     private static final By PLAYER = By.xpath(".//video[contains(@class,'display')]");
     public static final By LIKE_COUNT = By.xpath(".//span[@data-module='LikeComponent']/span[contains(@class,'count')]");
     private static final By NEXT_VIDEO_NAME = By.xpath(".//div[contains(@class,'vpl_panel-tip_v')]");

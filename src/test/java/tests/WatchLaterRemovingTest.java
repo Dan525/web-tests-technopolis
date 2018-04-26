@@ -31,7 +31,6 @@ public class WatchLaterRemovingTest extends TestBase {
         videoPage.clickUserMenu();
         videoPage.clickExitButton();
         videoPage.confirmExit();
-        new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
     }
 
     @Test
@@ -39,7 +38,7 @@ public class WatchLaterRemovingTest extends TestBase {
         System.out.println();
         log("Запущен тест");
         System.out.println("***************************************************");
-        UserMainPage userMainPage = new UserMainPage(driver);
+        UserMainPage userMainPage = new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
         VideoPage videoPage = userMainPage.clickVideoOnToolbar();
         videoPage.clickMyVideo();
         videoPage.clickWatchLaterSection();

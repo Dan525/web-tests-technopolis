@@ -4,25 +4,17 @@ package tests;
 import core.*;
 import model.TestBot;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
 
 public class NextVideoTest extends TestBase {
-
-    @Before
-    public void preCondition() throws Exception {
-        log("Авторизация");
-        System.out.println("***************************************************");
-        new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
-    }
 
     @Test
     public void nextVideoTest() throws Exception {
         System.out.println();
         log("Запущен тест");
         System.out.println("***************************************************");
-        UserMainPage userMainPage = new UserMainPage(driver);
+        UserMainPage userMainPage = new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
         FriendsMainPage friendsMainPage = userMainPage.clickFriendsOnToolbar();
         FriendPage friendPage = friendsMainPage.chooseFriend();
         FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
