@@ -68,7 +68,8 @@ public class VideoPlayerPage extends PageBase{
             public Boolean apply(WebDriver driver) {
                 if (!isElementVisible(NEXT_VIDEO_BUTTON)) return false;
                 moveMouseTo(NEXT_VIDEO_BUTTON);
-                return isElementVisible(NEXT_VIDEO_NAME) && !driver.findElement(NEXT_VIDEO_NAME).getText().isEmpty();
+                if (!isElementVisible(NEXT_VIDEO_NAME)) return false;
+                return !driver.findElement(NEXT_VIDEO_NAME).getText().isEmpty();
             }
         });
         return driver.findElement(NEXT_VIDEO_NAME).getText();
