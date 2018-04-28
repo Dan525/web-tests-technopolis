@@ -18,13 +18,13 @@ public class FriendPage extends Toolbar {
     protected void check() {
         new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
-                return isElementPresent(TEST_FRIEND_TOP_BLOCK);
+                return isElementVisible(TEST_FRIEND_TOP_BLOCK);
             }
         });
     }
 
     public FriendVideoPage selectVideoSection() {
-        Assert.assertTrue("Отсутствует кнопка \"Видео\" на странице друга", isElementPresent(TEST_FRIEND_VIDEOS));
+        Assert.assertTrue("Отсутствует кнопка \"Видео\" на странице друга", isElementVisible(TEST_FRIEND_VIDEOS));
         click(TEST_FRIEND_VIDEOS);
         log("Переход на страницу с видео друга");
         return new FriendVideoPage(driver);

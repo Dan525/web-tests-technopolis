@@ -17,7 +17,7 @@ public class LoginMainPage extends PageBase{
     protected void check() {
         new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
-                return isElementPresent(TEXT_FIELDS);
+                return isElementVisible(TEXT_FIELDS);
             }
         });
     }

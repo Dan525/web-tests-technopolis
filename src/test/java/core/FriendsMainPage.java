@@ -18,13 +18,13 @@ public class FriendsMainPage extends Toolbar {
     protected void check() {
         new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
-                return isElementPresent(FRIEND_CARDS_BLOCK);
+                return isElementVisible(FRIEND_CARDS_BLOCK);
             }
         });
     }
 
     public FriendPage chooseFriend() {
-        Assert.assertTrue("Отсутствует карточка друга в списке друзей", isElementPresent(TEST_FRIEND));
+        Assert.assertTrue("Отсутствует карточка друга в списке друзей", isElementVisible(TEST_FRIEND));
         click(TEST_FRIEND);
         log("Переход на страницу друга");
         return new FriendPage(driver);

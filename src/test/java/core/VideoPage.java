@@ -25,19 +25,19 @@ public class VideoPage extends Toolbar {
     protected void check() {
         new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
-                return isElementPresent(SECTIONS_BLOCK) && isElementPresent(SEARCH_VIDEO);
+                return isElementVisible(SECTIONS_BLOCK) && isElementVisible(SEARCH_VIDEO);
             }
         });
     }
 
     public void clickMyVideo() {
-        Assert.assertTrue("Отсутствует кнопка \"Моё видео\"", isElementPresent(MY_VIDEO));
+        Assert.assertTrue("Отсутствует кнопка \"Моё видео\"", isElementVisible(MY_VIDEO));
         click(MY_VIDEO);
         log("Переход на страницу \"Моё видео\"");
     }
 
     public void clickWatchLaterSection() {
-        Assert.assertTrue("Отсутствует кнопка \"Отложенное видео\"", isElementPresent(WATCHLATER_VIDEO));
+        Assert.assertTrue("Отсутствует кнопка \"Отложенное видео\"", isElementVisible(WATCHLATER_VIDEO));
         click(WATCHLATER_VIDEO);
         log("Переход на страницу \"Отложенное видео\"");
     }

@@ -18,13 +18,13 @@ public class FriendVideoPage extends Toolbar {
     protected void check() {
         new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
-                return isElementPresent(CONTENT_BLOCKS);
+                return isElementVisible(CONTENT_BLOCKS);
             }
         });
     }
 
     public FriendPlaylistPage selectPlaylist() {
-        Assert.assertTrue("Отсутствует необходимый плейлист", isElementPresent(TEST_FRIEND_PLAYLIST));
+        Assert.assertTrue("Отсутствует необходимый плейлист", isElementVisible(TEST_FRIEND_PLAYLIST));
         click(TEST_FRIEND_PLAYLIST);
         log("Переход в плейлист друга");
         return new FriendPlaylistPage(driver);

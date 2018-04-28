@@ -20,27 +20,27 @@ public abstract class Toolbar extends PageBase {
     }
 
     public VideoPage clickVideoOnToolbar() {
-        Assert.assertTrue("Отсутствует кнопка \"Видео\" на тулбаре", isElementPresent(VIDEO));
+        Assert.assertTrue("Отсутствует кнопка \"Видео\" на тулбаре", isElementVisible(VIDEO));
         click(VIDEO);
         log("Переход в раздел \"Видео\"");
         return new VideoPage(driver);
     }
 
     public FriendsMainPage clickFriendsOnToolbar() {
-        Assert.assertTrue("Отсутствует кнопка \"Друзья\" на тулбаре", isElementPresent(FRIENDS));
+        Assert.assertTrue("Отсутствует кнопка \"Друзья\" на тулбаре", isElementVisible(FRIENDS));
         click(FRIENDS);
         log("Переход в раздел \"Друзья\"");
         return new FriendsMainPage(driver);
     }
 
     public void clickUserMenu() {
-        Assert.assertTrue("Отсутствует кнопка для открытия меню пользователя", isElementPresent(USER_MENU));
+        Assert.assertTrue("Отсутствует кнопка для открытия меню пользователя", isElementVisible(USER_MENU));
         click(USER_MENU);
         log("Открытие меню пользователя");
     }
 
     public void clickExitButton() {
-        Assert.assertTrue("Отсутствует кнопка \"Выйти\"", isElementPresent(EXIT_BUTTON));
+        Assert.assertTrue("Отсутствует кнопка \"Выйти\"", isElementVisible(EXIT_BUTTON));
         click(EXIT_BUTTON);
         log("Нажатие на кнопку \"Выйти\"");
     }
@@ -54,7 +54,7 @@ public abstract class Toolbar extends PageBase {
     }
 
     public void clickFeedback() {
-        Assert.assertTrue("Отсутствует кнопка \"События\" на тулбаре", isElementPresent(FEEDBACK));
+        Assert.assertTrue("Отсутствует кнопка \"События\" на тулбаре", isElementVisible(FEEDBACK));
         click(FEEDBACK);
         log("Нажатие на кнопку \"События\"");
     }

@@ -76,17 +76,17 @@ public class VideoPlayerPage extends PageBase{
     }
 
     public String getVideoName() {
-        Assert.assertTrue("Отсутствует название видео", isElementPresent(VIDEO_NAME));
+        Assert.assertTrue("Отсутствует название видео", isElementVisible(VIDEO_NAME));
         return driver.findElement(VIDEO_NAME).getText();
     }
 
     public int getLikeCount() {
-        Assert.assertTrue("Отсутствует название видео", isElementPresent(LIKE_COUNT));
+        Assert.assertTrue("Отсутствует название видео", isElementVisible(LIKE_COUNT));
         return Integer.parseInt(driver.findElement(LIKE_COUNT).getText());
     }
 
     public void closeVideo() {
-        Assert.assertTrue("Отсутствует кнопка \"Закрыть видео\"", isElementPresent(CLOSE_VIDEO));
+        Assert.assertTrue("Отсутствует кнопка \"Закрыть видео\"", isElementVisible(CLOSE_VIDEO));
         click(CLOSE_VIDEO);
         log("Нажатие на кнопку \"Закрыть видео\"");
     }

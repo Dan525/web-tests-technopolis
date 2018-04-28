@@ -17,7 +17,7 @@ public class UserMainPage extends Toolbar {
     protected void check() {
         new WebDriverWait(driver, 10).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
-                return isElementPresent(SIDE_NAV_BAR) && isElementPresent(POSTING_FORM);
+                return isElementVisible(SIDE_NAV_BAR) && isElementVisible(POSTING_FORM);
             }
         });
     }
