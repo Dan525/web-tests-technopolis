@@ -1,62 +1,54 @@
 package tests;
 
-import core.*;
-import model.TestBot;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import selenide.*;
 
-public class LikeTest extends TestBase {
+public class LikeTest {
+    private static final Logger LOG = LoggerFactory.getLogger(LikeTest.class);
 
     @Before
     public void preCondition() {
-        log("Проверка на отсутствие Класса на тестовом видео");
-        System.out.println("***************************************************");
-        UserMainPage userMainPage = new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
-        FriendsMainPage friendsMainPage = userMainPage.clickFriendsOnToolbar();
-        FriendPage friendPage = friendsMainPage.chooseFriend();
-        FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
-        FriendPlaylistPage friendPlaylistPage = friendVideoPage.selectPlaylist();
-        VideoPlayerPage videoPlayerPage = friendPlaylistPage.selectVideo();
-        if (videoPlayerPage.isLikeAdded()) {
-            log("Класс на видео присутствовал - необходимо убрать");
+        LOG.info("Check like on video");
+        final UserPage userPage = new LoginPage().login("QA18testbot58", "QA18testbot");
+        final FriendsMainPage friendsMainPage = userPage.clickFriendsOnToolbar();
+        final FriendPage friendPage = friendsMainPage.chooseFriend("TechoBot3 TechoBot3");
+        final FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
+        final FriendPlaylistPage friendPlaylistPage = friendVideoPage.selectPlaylist();
+        final VideoPlayerPage videoPlayerPage = friendPlaylistPage.selectVideo();
+        final boolean isLikeAdded = videoPlayerPage.isLikeAdded();
+        if (isLikeAdded) {
             videoPlayerPage.clickLike();
-        } else log("Класс на видео изначально отсутствовал - подготовка к тесту не требуется");
+        }
         videoPlayerPage.closeVideo();
         friendPlaylistPage.clickUserMenu();
-        friendPlaylistPage.clickExitButton();
-        friendPlaylistPage.confirmExit();
+        friendPlaylistPage.exit();
     }
 
     @Test
-    public void likeTest() throws Exception {
-        System.out.println();
-        log("Запущен тест");
-        System.out.println("***************************************************");
-        UserMainPage userMainPage = new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
-        FriendsMainPage friendsMainPage = userMainPage.clickFriendsOnToolbar();
-        FriendPage friendPage = friendsMainPage.chooseFriend();
-        FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
-        FriendPlaylistPage friendPlaylistPage = friendVideoPage.selectPlaylist();
-        VideoPlayerPage videoPlayerPage = friendPlaylistPage.selectVideo();
-        int likeBefore = videoPlayerPage.getLikeCount();
-        log("Количество Классов до нажатия: " + likeBefore);
-        final WebElement likeElement = driver.findElement(videoPlayerPage.LIKE_COUNT);
+    public void likeTest() {
+        LOG.info("Like test with check feedback");
+        final UserPage userPage = new LoginPage().login("QA18testbot58", "QA18testbot");
+        final FriendsMainPage friendsMainPage = userPage.clickFriendsOnToolbar();
+        final FriendPage friendPage = friendsMainPage.chooseFriend("TechoBot3 TechoBot3");
+        final FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
+        final FriendPlaylistPage friendPlaylistPage = friendVideoPage.selectPlaylist();
+        final VideoPlayerPage videoPlayerPage = friendPlaylistPage.selectVideo();
+        final int likeBefore = videoPlayerPage.getLikeCount();
+        LOG.info("Likes count before: {}", likeBefore);
         videoPlayerPage.clickLike();
-        videoPlayerPage.waitStalenessOfElement(likeElement);
-        int likeAfter = videoPlayerPage.getLikeCount();
-        log("Количество Классов после нажатия: " + likeAfter);
-        Assert.assertEquals("Количество лайков не совпадает", likeBefore + 1, likeAfter);
+        final int likeAfter = videoPlayerPage.getLikeCount();
+        LOG.info("Likes count after: {}", likeAfter);
+        Assert.assertEquals("Like wasn't added", likeBefore + 1, likeAfter);
         videoPlayerPage.closeVideo();
-        friendVideoPage.clickUserMenu();
-        friendVideoPage.clickExitButton();
-        LoginMainPage loginMainPage = friendVideoPage.confirmExit();
-        UserMainPage userMainPage2 = loginMainPage.doLogin(new TestBot("89315960060", "q123451234"));
-        userMainPage2.clickFeedback();
-        String actualLikeFeedbackText = userMainPage2.getActualLikeFeedbackText();
-        log("Текст уведомления о лайке: " + actualLikeFeedbackText);
-        Assert.assertTrue("Текст уведомления о лайке не содержит необходимой информации",
-        actualLikeFeedbackText.contains("QA18testbot58 QA18testbot58") && actualLikeFeedbackText.contains("1"));
+        friendPlaylistPage.clickUserMenu();
+        friendPlaylistPage.exit();
+        final UserPage userPage2 = new LoginPage().login("TechoBot3", "TechnoPolis19");
+        final String actualLikeFeedbackText = userPage2.getLastLikeFeedbackText();
+        Assert.assertTrue("No info about like in feedback",
+                actualLikeFeedbackText.contains("QA18testbot58 QA18testbot58") && actualLikeFeedbackText.contains("1"));
     }
 }

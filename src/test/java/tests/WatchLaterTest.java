@@ -1,55 +1,48 @@
 package tests;
 
-import core.*;
-import model.TestBot;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import selenide.*;
 
-public class WatchLaterTest extends TestBase {
+public class WatchLaterTest {
+    private static final Logger LOG = LoggerFactory.getLogger(WatchLaterTest.class);
 
     @Before
-    public void preCondition() throws Exception {
-        log("Проверка на отсутствие тестового видео в отложенных");
-        System.out.println("***************************************************");
-        UserMainPage userMainPage = new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
-        VideoPage videoPage = userMainPage.clickVideoOnToolbar();
+    public void preCondition() {
+        final UserPage userPage = new LoginPage().login("QA18testbot58", "QA18testbot");
+        final VideoPage videoPage = userPage.clickVideoOnToolbar();
         videoPage.clickMyVideo();
         videoPage.clickWatchLaterSection();
-        String watchLaterVideoName = "1";
-        Boolean isVideoPresent = videoPage.checkVideoByName(watchLaterVideoName, videoPage.videoList());
+        final String watchLaterVideoName = "1";
+        final Boolean isVideoPresent = videoPage.checkVideoByName(watchLaterVideoName);
         if (isVideoPresent) {
-            log("Видео присутствует в отложенных - необходимо удалить");
-            videoPage.clickOnVideoByName(watchLaterVideoName, videoPage.videoList());
-            VideoPlayerPage videoPlayerPage = new VideoPlayerPage(driver);
+            final VideoPlayerPage videoPlayerPage = videoPage.clickOnVideoByName(watchLaterVideoName);
             videoPlayerPage.clickWatchLater();
             videoPlayerPage.closeVideo();
-        } else log("Видео изначально отсутствовало в отложенных - подготовка к тесту не требуется");
+        }
         videoPage.clickUserMenu();
-        videoPage.clickExitButton();
-        videoPage.confirmExit();
+        videoPage.exit();
     }
 
     @Test
-    public void watchLaterTest() throws Exception {
-        System.out.println();
-        log("Запущен тест");
-        System.out.println("***************************************************");
-        UserMainPage userMainPage = new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
-        FriendsMainPage friendsMainPage = userMainPage.clickFriendsOnToolbar();
-        FriendPage friendPage = friendsMainPage.chooseFriend();
-        FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
-        FriendPlaylistPage friendPlaylistPage = friendVideoPage.selectPlaylist();
-        VideoPlayerPage videoPlayerPage = friendPlaylistPage.selectVideo();
+    public void watchLaterTest() {
+        final UserPage userPage = new LoginPage().login("QA18testbot58", "QA18testbot");
+        final FriendsMainPage friendsMainPage = userPage.clickFriendsOnToolbar();
+        final FriendPage friendPage = friendsMainPage.chooseFriend("Денис Борисов");
+        final FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
+        final FriendPlaylistPage friendPlaylistPage = friendVideoPage.selectPlaylist();
+        final VideoPlayerPage videoPlayerPage = friendPlaylistPage.selectVideo();
         videoPlayerPage.clickWatchLater();
-        String videoName = videoPlayerPage.getVideoName();
-        log("Название отложенного видео: " + videoName);
+        final String videoName = videoPlayerPage.getVideoName();
+        LOG.info("Watch later video name: {}", videoName);
         videoPlayerPage.closeVideo();
-        VideoPage videoPage = new FriendVideoPage(driver).clickVideoOnToolbar();
+        final VideoPage videoPage = new FriendVideoPage().clickVideoOnToolbar();
         videoPage.clickMyVideo();
         videoPage.clickWatchLaterSection();
-        String watchLaterVideoName = videoPage.videoList().get(0).getVideoName();
-        log("Название последнего добавленного видео в списке отложенных видео: " + watchLaterVideoName);
-        Assert.assertEquals("Видео отсутствует в отложенных", videoName, watchLaterVideoName);
+        final String watchLaterVideoName = videoPage.videoList().get(0).getText();
+        Assert.assertEquals("Watch later video name is differ from expected", videoName, watchLaterVideoName);
     }
 }

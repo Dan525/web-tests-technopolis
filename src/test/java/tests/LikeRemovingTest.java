@@ -1,52 +1,47 @@
 package tests;
 
-import core.*;
-import model.TestBot;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import selenide.*;
 
-public class LikeRemovingTest extends TestBase {
+public class LikeRemovingTest {
+    private static final Logger LOG = LoggerFactory.getLogger(LikeRemovingTest.class);
 
     @Before
     public void preCondition() {
-        log("Проверка на наличие Класса на тестовом видео");
-        System.out.println("***************************************************");
-        UserMainPage userMainPage = new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
-        FriendsMainPage friendsMainPage = userMainPage.clickFriendsOnToolbar();
-        FriendPage friendPage = friendsMainPage.chooseFriend();
-        FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
-        FriendPlaylistPage friendPlaylistPage = friendVideoPage.selectPlaylist();
-        VideoPlayerPage videoPlayerPage = friendPlaylistPage.selectVideo();
-        if (!videoPlayerPage.isLikeAdded()) {
-            log("Класс на видео отсутствует - необходимо поставить");
+        LOG.info("Check like on video");
+        final UserPage userPage = new LoginPage().login("QA18testbot58", "QA18testbot");
+        final FriendsMainPage friendsMainPage = userPage.clickFriendsOnToolbar();
+        final FriendPage friendPage = friendsMainPage.chooseFriend("Денис Борисов");
+        final FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
+        final FriendPlaylistPage friendPlaylistPage = friendVideoPage.selectPlaylist();
+        final VideoPlayerPage videoPlayerPage = friendPlaylistPage.selectVideo();
+        final boolean isLikeAdded = videoPlayerPage.isLikeAdded();
+        if (!isLikeAdded) {
             videoPlayerPage.clickLike();
-        } else log("Класс на видео изначально присутствовал - подготовка к тесту не требуется");
+        }
         videoPlayerPage.closeVideo();
         friendPlaylistPage.clickUserMenu();
-        friendPlaylistPage.clickExitButton();
-        friendPlaylistPage.confirmExit();
+        friendPlaylistPage.exit();
     }
 
     @Test
-    public void likeRemovingTest() throws Exception {
-        System.out.println();
-        log("Запущен тест");
-        System.out.println("***************************************************");
-        UserMainPage userMainPage = new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
-        FriendsMainPage friendsMainPage = userMainPage.clickFriendsOnToolbar();
-        FriendPage friendPage = friendsMainPage.chooseFriend();
-        FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
-        FriendPlaylistPage friendPlaylistPage = friendVideoPage.selectPlaylist();
-        VideoPlayerPage videoPlayerPage = friendPlaylistPage.selectVideo();
+    public void likeRemovingTest() {
+        LOG.info("Like removing test");
+        final UserPage userPage = new LoginPage().login("QA18testbot58", "QA18testbot");
+        final FriendsMainPage friendsMainPage = userPage.clickFriendsOnToolbar();
+        final FriendPage friendPage = friendsMainPage.chooseFriend("Денис Борисов");
+        final FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
+        final FriendPlaylistPage friendPlaylistPage = friendVideoPage.selectPlaylist();
+        final VideoPlayerPage videoPlayerPage = friendPlaylistPage.selectVideo();
         final int likeBefore = videoPlayerPage.getLikeCount();
-        log("Количество Классов до нажатия: " + likeBefore);
-        final WebElement likeElement = driver.findElement(videoPlayerPage.LIKE_COUNT);
+        LOG.info("Likes count before: {}", likeBefore);
         videoPlayerPage.clickLike();
-        videoPlayerPage.waitStalenessOfElement(likeElement);
         final int likeAfter = videoPlayerPage.getLikeCount();
-        log("Количество Классов после нажатия: " + likeAfter);
-        Assert.assertEquals("Количество лайков не совпадает", likeBefore - 1, likeAfter);
+        LOG.info("Likes count after: {}", likeAfter);
+        Assert.assertEquals("Like wasn't removed", likeBefore - 1, likeAfter);
     }
 }

@@ -1,33 +1,28 @@
 package tests;
 
 
-import core.*;
-import model.TestBot;
 import org.junit.Assert;
 import org.junit.Test;
-import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import selenide.*;
 
-public class NextVideoTest extends TestBase {
+public class NextVideoTest {
+    private static final Logger LOG = LoggerFactory.getLogger(NextVideoTest.class);
 
     @Test
-    public void nextVideoTest() throws Exception {
-        System.out.println();
-        log("Запущен тест");
-        System.out.println("***************************************************");
-        UserMainPage userMainPage = new LoginMainPage(driver).doLogin(new TestBot("QA18testbot58", "QA18testbot"));
-        FriendsMainPage friendsMainPage = userMainPage.clickFriendsOnToolbar();
-        FriendPage friendPage = friendsMainPage.chooseFriend();
-        FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
-        FriendPlaylistPage friendPlaylistPage = friendVideoPage.selectPlaylist();
-        VideoPlayerPage videoPlayerPage = friendPlaylistPage.selectVideo();
-        String nextVideoName = videoPlayerPage.getNextVideoName();
-        log("Ожидаемое название следующего видео: " + nextVideoName);
-        final WebElement timer = driver.findElement(videoPlayerPage.TIMER);
+    public void nextVideoTest() {
+        final UserPage userPage = new LoginPage().login("QA18testbot58", "QA18testbot");
+        final FriendsMainPage friendsMainPage = userPage.clickFriendsOnToolbar();
+        final FriendPage friendPage = friendsMainPage.chooseFriend("Денис Борисов");
+        final FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
+        final FriendPlaylistPage friendPlaylistPage = friendVideoPage.selectPlaylist();
+        final VideoPlayerPage videoPlayerPage = friendPlaylistPage.selectVideo();
+        final String nextVideoName = videoPlayerPage.getNextVideoName();
+        LOG.info("Expected next video name: {}", nextVideoName);
         videoPlayerPage.clickNextVideo();
-        videoPlayerPage.waitStalenessOfElement(timer);
-        VideoPlayerPage nextVideoPlayerPage = new VideoPlayerPage(driver);
-        String actualVideoName = nextVideoPlayerPage.getVideoName();
-        log("Название следующего видео: " + actualVideoName);
-        Assert.assertEquals("Названия видео не совпадают", nextVideoName, actualVideoName);
+        final String videoName = videoPlayerPage.getVideoName();
+        LOG.info("Next video name: {}", videoName);
+        Assert.assertEquals("Next video name is differ from expected", nextVideoName, videoName);
     }
 }
