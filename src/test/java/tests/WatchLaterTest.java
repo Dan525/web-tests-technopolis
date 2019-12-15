@@ -1,5 +1,6 @@
 package tests;
 
+import model.TestBot;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,19 +8,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import selenide.*;
 
-public class WatchLaterTest {
+public class WatchLaterTest extends TestBase {
     private static final Logger LOG = LoggerFactory.getLogger(WatchLaterTest.class);
 
     @Before
     public void preCondition() {
-        final UserPage userPage = new LoginPage().login("QA18testbot58", "QA18testbot");
-        final VideoPage videoPage = userPage.clickVideoOnToolbar();
+        UserPage userPage = new LoginPage().login(new TestBot("QA18testbot58", "QA18testbot"));
+        VideoPage videoPage = userPage.clickVideoOnToolbar();
         videoPage.clickMyVideo();
         videoPage.clickWatchLaterSection();
-        final String watchLaterVideoName = "1";
-        final Boolean isVideoPresent = videoPage.checkVideoByName(watchLaterVideoName);
+        String watchLaterVideoName = "1";
+        Boolean isVideoPresent = videoPage.checkVideoByName(watchLaterVideoName);
         if (isVideoPresent) {
-            final VideoPlayerPage videoPlayerPage = videoPage.clickOnVideoByName(watchLaterVideoName);
+            VideoPlayerPage videoPlayerPage = videoPage.clickOnVideoByName(watchLaterVideoName);
             videoPlayerPage.clickWatchLater();
             videoPlayerPage.closeVideo();
         }
@@ -29,20 +30,20 @@ public class WatchLaterTest {
 
     @Test
     public void watchLaterTest() {
-        final UserPage userPage = new LoginPage().login("QA18testbot58", "QA18testbot");
-        final FriendsMainPage friendsMainPage = userPage.clickFriendsOnToolbar();
-        final FriendPage friendPage = friendsMainPage.chooseFriend("Денис Борисов");
-        final FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
-        final FriendPlaylistPage friendPlaylistPage = friendVideoPage.selectPlaylist();
-        final VideoPlayerPage videoPlayerPage = friendPlaylistPage.selectVideo();
+        UserPage userPage = new LoginPage().login(new TestBot("QA18testbot58", "QA18testbot"));
+        FriendsMainPage friendsMainPage = userPage.clickFriendsOnToolbar();
+        FriendPage friendPage = friendsMainPage.chooseFriend("Денис Борисов");
+        FriendVideoPage friendVideoPage = friendPage.selectVideoSection();
+        FriendPlaylistPage friendPlaylistPage = friendVideoPage.selectPlaylist("Тест");
+        VideoPlayerPage videoPlayerPage = friendPlaylistPage.selectVideo("1");
         videoPlayerPage.clickWatchLater();
-        final String videoName = videoPlayerPage.getVideoName();
+        String videoName = videoPlayerPage.getVideoName();
         LOG.info("Watch later video name: {}", videoName);
         videoPlayerPage.closeVideo();
-        final VideoPage videoPage = new FriendVideoPage().clickVideoOnToolbar();
+        VideoPage videoPage = new FriendVideoPage().clickVideoOnToolbar();
         videoPage.clickMyVideo();
         videoPage.clickWatchLaterSection();
-        final String watchLaterVideoName = videoPage.videoList().get(0).getText();
+        String watchLaterVideoName = videoPage.videoList().get(0).getVideoName();
         Assert.assertEquals("Watch later video name is differ from expected", videoName, watchLaterVideoName);
     }
 }

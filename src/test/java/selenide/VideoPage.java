@@ -8,18 +8,27 @@ import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
 public class VideoPage extends Toolbar {
     private static final Logger LOG = LoggerFactory.getLogger(VideoPage.class);
 
+    private static final By SECTIONS_BLOCK = By.xpath(".//div[@class='nav-side ']");
+    private static final By SEARCH_VIDEO = By.xpath(".//div[@class='toolbar_search']");
     private static final By MY_VIDEO = By.xpath(".//a[@href='/video/myVideo']");
     private static final By VIDEO_PREVIEW = By.xpath(".//div[@class='video-card_img-w']");
     private static final By WATCHLATER_VIDEO = By.xpath(".//a[@href='/video/watchLater']");
-    private static final By VIDEO_NAME = By.xpath(".//a[@class='video-card_n ellip']");
+    private static final By VIDEO = By.xpath(".//div[contains(@class, 'ugrid_i')]");
     private static final By EMPTY_VIDEO_LIST = By.xpath(".//div[@class='stub-empty __video-card ']");
-    private static final By VIDEO_LIST_GRID = By.xpath(".//div[@class='ugrid __l']");
+
+    @Override
+    protected void check() {
+        $(SECTIONS_BLOCK).waitUntil(Condition.visible, PAGE_CHECK_TIMEOUT);
+        $(SEARCH_VIDEO).waitUntil(Condition.visible, PAGE_CHECK_TIMEOUT);
+    }
 
     public void clickMyVideo() {
         $(MY_VIDEO).shouldBe(Condition.visible).click();
@@ -30,9 +39,8 @@ public class VideoPage extends Toolbar {
     }
 
     public Boolean checkVideoByName(String targetName) {
-        final ElementsCollection videoList = videoList();
-        for (SelenideElement videoName : videoList) {
-            if (videoName.getText().equals(targetName)) {
+        for (VideoWrapper videoWrapper : videoList()) {
+            if (videoWrapper.getVideoName().equals(targetName)) {
                 LOG.info("Founded video: {}", targetName);
                 return true;
             }
@@ -42,12 +50,12 @@ public class VideoPage extends Toolbar {
     }
 
     public VideoPlayerPage clickOnVideoByName(String targetName) {
-        final ElementsCollection videoList = videoList();
+        final List<VideoWrapper> videoList = videoList();
         Assert.assertFalse("Video list is empty", videoList.isEmpty());
-        for (SelenideElement video : videoList) {
-            if (video.getText().equals(targetName)) {
+        for (VideoWrapper videoWrapper : videoList) {
+            if (videoWrapper.getVideoName().equals(targetName)) {
                 LOG.info("Founded video: {}", targetName);
-                video.click();
+                videoWrapper.getMainElement().shouldBe(Condition.visible).click();
                 return new VideoPlayerPage();
             }
         }
@@ -56,13 +64,14 @@ public class VideoPage extends Toolbar {
         return null;
     }
 
-    public ElementsCollection videoList() {
-        ElementsCollection videoPreview = $$(VIDEO_PREVIEW);
-        ElementsCollection emptyList = $$(EMPTY_VIDEO_LIST);
-        while (videoPreview.isEmpty() && emptyList.isEmpty()) {
-            videoPreview = $$(VIDEO_LIST_GRID);
-            emptyList = $$(EMPTY_VIDEO_LIST);
+    public List<VideoWrapper> videoList() {
+        ElementsCollection videoElements = $$(VIDEO);
+        SelenideElement emptyList = $(EMPTY_VIDEO_LIST);
+        int attempt = 0;
+        while (attempt < 4 && videoElements.isEmpty() && !emptyList.isDisplayed()) {
+            LOG.info("Retry attempt #{} to receive video list", attempt + 1);
+            attempt++;
         }
-        return $$(VIDEO_NAME);
+        return VideoTransformer.wrap($$(VIDEO));
     }
 }

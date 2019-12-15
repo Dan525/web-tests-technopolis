@@ -6,7 +6,7 @@ import org.openqa.selenium.By;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
-public abstract class Toolbar {
+public abstract class Toolbar extends PageBase {
     private static final By VIDEO = By.xpath(".//li[@id='hook_Block_TopMenuVideo']");
     private static final By FRIENDS = By.xpath(".//li[@data-l='t,friends']");
     private static final By USER_MENU = By.xpath(".//div[@class='toolbar_dropdown_w h-mod']");

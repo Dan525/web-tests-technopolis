@@ -2,6 +2,7 @@ package selenide;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
-public class VideoPlayerPage {
+public class VideoPlayerPage extends PageBase {
     private static final Logger LOG = LoggerFactory.getLogger(VideoPlayerPage.class);
 
     private static final By PLAYER_PANEL = By.xpath(".//div[@class='html5-vpl_panel_cnt']");
@@ -23,6 +24,12 @@ public class VideoPlayerPage {
     private static final By NEXT_VIDEO_NAME = By.xpath(".//div[@class='html5-vpl_next-video_n']");
     private static final By NEXT_VIDEO_NAME_CSS = By.cssSelector(".html5-vpl_next-video_n");
     private static final By NEXT_VIDEO_BUTTON = By.xpath(".//div[contains(@class,'vpl_panel_btn') and contains(@al-click,'NextButton')]");
+    private static final By TIMER = By.xpath(".//div[@class='html5-vpl_time_t']");
+
+    @Override
+    protected void check() {
+        $(PLAYER).waitUntil(Condition.visible, PAGE_CHECK_TIMEOUT);
+    }
 
     public void clickWatchLater() {
         $(PLAYER).shouldBe(Condition.visible).click();
@@ -41,8 +48,8 @@ public class VideoPlayerPage {
     }
 
     public void clickNextVideo() {
-        $(PLAYER).shouldBe(Condition.visible).hover()
-                .$(PLAYER_PANEL).shouldBe(Condition.appear).hover()
+        $(PLAYER).shouldBe(Condition.visible).click();
+                $(PLAYER_PANEL).shouldBe(Condition.appear).hover()
                 .$(NEXT_VIDEO_BUTTON).shouldBe(Condition.appear).click();
         LOG.info("Clicked next video");
     }
@@ -73,9 +80,11 @@ public class VideoPlayerPage {
 
     public boolean isLikeAdded() {
         $(PLAYER).shouldBe(Condition.visible).click();
-        ElementsCollection likeButton = $$(PLAYER_LIKE);
-        while (likeButton.isEmpty()) {
-            likeButton = $$(PLAYER_LIKE);
+        SelenideElement likeButton = $(PLAYER_LIKE);
+        int attempt = 0;
+        while (attempt < 4 && likeButton.isDisplayed()) {
+            LOG.info("Retry attempt #{} to find like button", attempt + 1);
+            attempt++;
         }
         final boolean likeNotAdded = $(PLAYER_LIKE_TEXT).shouldBe(Condition.exist).getText().contains("Класс!");
         return !likeNotAdded;
