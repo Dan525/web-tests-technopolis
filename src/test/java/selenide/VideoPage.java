@@ -7,6 +7,8 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import selenide.wrappers.VideoWrapper;
+import utils.Transformer;
 
 import java.util.List;
 
@@ -72,6 +74,6 @@ public class VideoPage extends Toolbar {
             LOG.info("Retry attempt #{} to receive video list", attempt + 1);
             attempt++;
         }
-        return VideoTransformer.wrap($$(VIDEO));
+        return Transformer.wrap($$(VIDEO), VideoWrapper::new);
     }
 }

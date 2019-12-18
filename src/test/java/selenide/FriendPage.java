@@ -1,17 +1,24 @@
 package selenide;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.SelenideElement;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import selenide.wrappers.FriendToolbarWrapper;
+import utils.Transformer;
+
+import java.util.List;
 
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
+import static selenide.wrappers.FriendToolbarWrapper.FRIEND_NAV_ITEM;
 
 public class FriendPage extends Toolbar {
     private static final Logger LOG = LoggerFactory.getLogger(FriendPage.class);
 
     private static final By TEST_FRIEND_TOP_BLOCK = By.xpath(".//div[@class='main-content-header_data_nav-menu']");
-    private static final String FRIEND_SECTIONS = ".//a[@class='mctc_navMenuSec ' and text()='%s']";
 
     @Override
     protected void check() {
@@ -19,13 +26,25 @@ public class FriendPage extends Toolbar {
     }
 
     public FriendVideoPage selectVideoSection() {
-        selectSection("Видео");
-        return new FriendVideoPage();
+        final SelenideElement section = selectSection("Видео");
+        if (section != null) {
+            section.click();
+            LOG.info("Clicked on video section");
+            return new FriendVideoPage();
+        }
+        return null;
     }
 
-    private void selectSection(String sectionName) {
-        final String sectionXpath = String.format(FRIEND_SECTIONS, sectionName);
-        $(By.xpath(sectionXpath)).shouldBe(Condition.visible).click();
-        LOG.info("Clicked on section: {}", sectionName);
+    private SelenideElement selectSection(String sectionName) {
+        final List<FriendToolbarWrapper> sections = Transformer.wrap($$(FRIEND_NAV_ITEM), FriendToolbarWrapper::new);
+        Assert.assertFalse("No navigation elements", sections.isEmpty());
+        for (FriendToolbarWrapper section : sections) {
+            if (section.getNavItemName().equals(sectionName)) {
+                return section.getMainElement().shouldBe(Condition.visible);
+            }
+        }
+        LOG.error("Can't find section with name: {}", sectionName);
+        Assert.fail();
+        return null;
     }
 }
