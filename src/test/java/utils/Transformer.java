@@ -10,13 +10,13 @@ import java.util.List;
 
 public class Transformer {
 
-    public static <T extends Wrapper> List<T> wrap(ElementsCollection elements, ElemSupplier<T> supplier) {
+    public static <T extends Wrapper> List<T> wrap(ElementsCollection elements, ElementWrapper<T> wrapper) {
         if (elements.isEmpty()) {
             return Collections.emptyList();
         }
         List<T> wrappers = new ArrayList<>();
         for (SelenideElement elem : elements) {
-            wrappers.add(supplier.get(elem));
+            wrappers.add(wrapper.wrap(elem));
         }
         return wrappers;
     }
